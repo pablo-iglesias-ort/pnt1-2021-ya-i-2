@@ -8,7 +8,7 @@ namespace AgendaDeTurnos.Models
 {
     public class Formulario
     {
-        #region Actributos o Propiedades
+        #region Atributos o Propiedades
 
         [Required(ErrorMessage = "el id es requerido")]
         public int id { get; set; }

@@ -8,12 +8,12 @@ namespace AgendaDeTurnos.Models
 {   // Clases base para los datos basico de una persona 
     public class Persona
     {
-        #region Actributos o  Propiedades
+        #region Atributos o  Propiedades
         [Required(ErrorMessage = "el id es requerido")]
         public int Id { get; set; }
-        [Required(ErrorMessage = "el nombre es requerido es requerido")]
+        [Required(ErrorMessage = "el nombre es requerido")]
         public string Nombre { get; set; }
-        [Required(ErrorMessage = "el apellido es requerido es requerido")]
+        [Required(ErrorMessage = "el apellido es requerido")]
         public string Apellido { get; set; }
 
         [RegularExpression(@"^(?!00000)[0-9]{8,8}$", ErrorMessage = "error en el formato DNI")]
