@@ -15,5 +15,7 @@ namespace AgendaDeTurnos.Data
         }
 
         public DbSet<AgendaDeTurnos.Models.Usuario> Usuario { get; set; }
+
+        public DbSet<AgendaDeTurnos.Models.Persona> Persona { get; set; }
     }
 }

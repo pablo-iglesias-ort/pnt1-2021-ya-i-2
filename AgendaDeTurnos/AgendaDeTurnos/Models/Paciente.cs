@@ -10,10 +10,9 @@ namespace AgendaDeTurnos.Models
     {
         #region Atributos o Propiedades
         [Required(ErrorMessage = "el id es requerido")]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required(ErrorMessage = "la fecha de alta requerida")]
-
         public DateTime fechaAlta { get; set; }
 
         [Required(ErrorMessage = "el email es requerido")]

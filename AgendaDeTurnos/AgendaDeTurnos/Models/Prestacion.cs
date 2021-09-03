@@ -11,7 +11,7 @@ namespace AgendaDeTurnos.Models
         #region Atributos o Propiedades
 
         [Required(ErrorMessage = "el id es requerido")]
-        public int id { get; set; } 
+        public Guid Id { get; set; } 
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public DateTime Duracion { get; set; }
