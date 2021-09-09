@@ -10,7 +10,7 @@ namespace AgendaDeTurnos.Models
     {
         #region Atributos o Propiedades
         [Required(ErrorMessage = "el id es requerido")]
-        public Guid Id { get; set; }
+        public Guid IdPaciente { get; set; }
 
         [Required(ErrorMessage = "la fecha de alta requerida")]
         public DateTime fechaAlta { get; set; }
@@ -21,7 +21,7 @@ namespace AgendaDeTurnos.Models
 
         public string obraSocial { get; set; }
 
-        public List<Turno> turnos { get; set; }
+        public List<Turno> Turno { get; set; }// propiedad de navegacion del turnos 
 
         #endregion
 

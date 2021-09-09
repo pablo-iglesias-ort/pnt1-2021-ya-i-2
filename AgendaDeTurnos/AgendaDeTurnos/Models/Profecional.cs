@@ -11,7 +11,7 @@ namespace AgendaDeTurnos.Models
         #region Atributos o Propiedades
 
         [Required(ErrorMessage = "el id es requerido")]
-        public Guid Id { get; set; }
+        public Guid Idprofesional { get; set; }
 
         [Required(ErrorMessage = "la fecha de alta es requerido")]
         public DateTime FechaAlta { get; set; }
@@ -28,7 +28,7 @@ namespace AgendaDeTurnos.Models
 
         public DateTime HoraFin { get; set; }
 
-        public virtual ICollection<Turno> turnos { get; set; }
+        public  List<Turno> Turno { get; set; } // propiedad de navegacion de turnos del profeconal
       
         #endregion
 

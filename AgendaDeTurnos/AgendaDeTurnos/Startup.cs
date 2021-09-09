@@ -27,8 +27,10 @@ namespace AgendaDeTurnos
         {
             services.AddControllersWithViews();
 
+
             services.AddDbContext<AgendaDeTurnosContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("AgendaDeTurnosContext")));
+                options.UseInMemoryDatabase("AgendaDeTurnos"));
+                //options.UseSqlServer(Configuration.GetConnectionString("AgendaDeTurnosContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

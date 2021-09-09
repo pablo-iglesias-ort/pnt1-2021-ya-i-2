@@ -19,11 +19,15 @@ namespace AgendaDeTurnos.Models
         public bool Activo { get; set; } = true;
         [Required(ErrorMessage = "la fecha de  alta es requerida")]
         public DateTime FechaAlta { get; set; }
+        
         // Paciented 
-        public Paciente Paciented { get; set; }
+        public int IdPaciente { get; set; } // Clave externa del Paciente
+        public Paciente Paciente { get; set; } // proiedad de nevegacion para pientes
 
         // Profeciona 
-        public int Idprofesional { get; set; }
+        public int Idprofesional { get; set; } // Clave externa del Profecional
+        public Profecional Profecional { get; set; } // proiedad de nevegacion para profecionales
+
         public string DescripcionCancelacion { get; set; }
 
     
