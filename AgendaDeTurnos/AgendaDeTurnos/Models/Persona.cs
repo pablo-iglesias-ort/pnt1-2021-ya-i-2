@@ -18,11 +18,12 @@ namespace AgendaDeTurnos.Models
         public string Apellido { get; set; }
 
         [RegularExpression(@"^(?!00000)[0-9]{8,8}$", ErrorMessage = "error en el formato DNI")]
-        [Required(ErrorMessage = "el DNI es requerido es requerido")]
+        [Required(ErrorMessage = "el DNI es requerido")]
         public string DNI { get; set; }
         [RegularExpression(@"^(?!00000)[0-9]{8,8}$", ErrorMessage = "el numero de telefono no es valido ")]
         public string Telefono { get; set; }
-        
+
+        [Required(ErrorMessage = "la direccion es requerida")]
         public string Direccion { get; set; }
 
         #endregion

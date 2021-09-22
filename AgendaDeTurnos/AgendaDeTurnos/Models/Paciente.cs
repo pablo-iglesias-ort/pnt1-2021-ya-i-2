@@ -19,6 +19,7 @@ namespace AgendaDeTurnos.Models
         [EmailAddress(ErrorMessage = "Ingrese una dirección de correo electrónico válida")]
         public string email { get; set; }
 
+        [Required(ErrorMessage = "la obra social es requerida")]
         public string obraSocial { get; set; }
 
         public List<Turno> Turno { get; set; }// propiedad de navegacion del turnos 

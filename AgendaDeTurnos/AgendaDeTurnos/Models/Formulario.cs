@@ -13,24 +13,27 @@ namespace AgendaDeTurnos.Models
         [Required(ErrorMessage = "el id es requerido")]
         public Guid Id { get; set; }
 
-        [Required(ErrorMessage = "el campo fecha es requerido")]
+        [Required(ErrorMessage = "la fecha es requerida")]
         public DateTime Fecha { get; set; }
 
-        [Required(ErrorMessage = "el campo email es requerido")]
+        [Required(ErrorMessage = "el email es requerido")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "el campo Nombre es requerido")]
+        [Required(ErrorMessage = "el Nombre es requerido")]
         public string Nombre { get; set;}
 
-        [Required(ErrorMessage = "el campo Apellido  es requerido")]
+        [Required(ErrorMessage = "el Apellido  es requerido")]
         public string Apellido { get; set;}
 
         public bool Leido { get; set; } = false;
 
+        [Required(ErrorMessage = "el titulo es requerido")]
         public string Titulo { get; set; }
 
+        [Required(ErrorMessage = "el mensaje es requerido")]
         public string Mensaje { get; set; }
 
+        [Required(ErrorMessage = "el usuario es requerido")]
         public Usuario Usuario { get; set; }
 
         #endregion

@@ -13,19 +13,21 @@ namespace AgendaDeTurnos.Models
         [Required(ErrorMessage = "el id es requerido")]
         public Guid Idprofesional { get; set; }
 
-        [Required(ErrorMessage = "la fecha de alta es requerido")]
+        [Required(ErrorMessage = "la fecha de alta es requerida")]
         public DateTime FechaAlta { get; set; }
 
         [EmailAddress(ErrorMessage = "Ingrese una dirección de correo electrónico válida")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "la matricula es requerido")]
+        [Required(ErrorMessage = "la matricula es requerida")]
         public string Matricula { get; set; }
 
         public Prestacion Prestacion { get; set; }
 
+        [Required(ErrorMessage = "la hora de inicio es requerida")]
         public String HoraInicio { get; set; }
 
+        [Required(ErrorMessage = "la hora de fin es requerida")]
         public DateTime HoraFin { get; set; }
 
         public  List<Turno> Turno { get; set; } // propiedad de navegacion de turnos del profeconal

@@ -28,6 +28,7 @@ namespace AgendaDeTurnos.Models
         public int Idprofesional { get; set; } // Clave externa del Profecional
         public Profecional Profecional { get; set; } // proiedad de nevegacion para profecionales
 
+        [Required(ErrorMessage = "la descripcion es requerida")]
         public string DescripcionCancelacion { get; set; }
 
     
