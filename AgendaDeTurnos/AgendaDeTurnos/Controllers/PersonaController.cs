@@ -33,8 +33,7 @@ namespace AgendaDeTurnos.Controllers
                 return NotFound();
             }
 
-            var persona = await _context.Persona
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var persona = await _context.Persona.FirstOrDefaultAsync(m => m.Id == id);
             if (persona == null)
             {
                 return NotFound();

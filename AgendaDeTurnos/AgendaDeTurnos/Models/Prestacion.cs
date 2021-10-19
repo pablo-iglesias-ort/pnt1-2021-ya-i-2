@@ -10,6 +10,7 @@ namespace AgendaDeTurnos.Models
     {
         #region Atributos o Propiedades
 
+        [Key]
         [Required(ErrorMessage = "el id es requerido")]
         public Guid Id { get; set; }
 
@@ -22,7 +23,7 @@ namespace AgendaDeTurnos.Models
 
         [Required(ErrorMessage = "el precio es requerido")]
         public double Precio { get; set; }
-        public Profecional Profesionales { get; set; }
+        public Profesional Profesionales { get; set; }
      
         #endregion
 

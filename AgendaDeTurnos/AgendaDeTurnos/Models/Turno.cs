@@ -10,6 +10,7 @@ namespace AgendaDeTurnos.Models
     {
         #region Atributos o Propiedades
 
+        [Key]
         [Required(ErrorMessage = "el id es requerido")]
         public Guid Id { get; set; }
 
@@ -26,7 +27,7 @@ namespace AgendaDeTurnos.Models
 
         // Profeciona 
         public int Idprofesional { get; set; } // Clave externa del Profecional
-        public Profecional Profecional { get; set; } // proiedad de nevegacion para profecionales
+        public Profesional Profesional { get; set; } // proiedad de nevegacion para profesionales
 
         [Required(ErrorMessage = "la descripcion es requerida")]
         public string DescripcionCancelacion { get; set; }

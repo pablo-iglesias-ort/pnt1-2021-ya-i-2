@@ -10,12 +10,13 @@ namespace AgendaDeTurnos.Models
     {
         #region Atributos o Propiedades
 
+        [Key]
         [Required(ErrorMessage ="el id es requerido")]
         public Guid Id { get; set; }
 
         [Required(ErrorMessage = "el nombre es requerido")]
         public string nombre { get; set; }
-
+        
         [EmailAddress(ErrorMessage = "Ingrese una dirección de correo electrónico válida")]
         public string email { get; set; }
 

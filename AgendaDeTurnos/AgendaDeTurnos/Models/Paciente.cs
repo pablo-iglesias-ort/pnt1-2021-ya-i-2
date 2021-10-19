@@ -9,6 +9,8 @@ namespace AgendaDeTurnos.Models
     public class Paciente:Persona
     {
         #region Atributos o Propiedades
+
+        [Key]
         [Required(ErrorMessage = "el id es requerido")]
         public Guid IdPaciente { get; set; }
 

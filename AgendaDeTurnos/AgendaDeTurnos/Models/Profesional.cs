@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace AgendaDeTurnos.Models
 {
-    public class Profecional: Persona
+    public class Profesional: Persona
     {
         #region Atributos o Propiedades
 
+        [Key]
         [Required(ErrorMessage = "el id es requerido")]
         public Guid Idprofesional { get; set; }
 
@@ -30,7 +31,7 @@ namespace AgendaDeTurnos.Models
         [Required(ErrorMessage = "la hora de fin es requerida")]
         public DateTime HoraFin { get; set; }
 
-        public  List<Turno> Turno { get; set; } // propiedad de navegacion de turnos del profeconal
+        public  List<Turno> Turno { get; set; } // propiedad de navegacion de turnos del profesional
       
         #endregion
 
