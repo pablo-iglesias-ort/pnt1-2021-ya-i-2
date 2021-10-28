@@ -27,9 +27,8 @@ namespace AgendaDeTurnos
         {
             services.AddControllersWithViews();
 
-
             services.AddDbContext<AgendaDeTurnosContext>(options =>
-                options.UseInMemoryDatabase("AgendaDeTurnos"));
+                options.UseSqlite(@"Data Source=D:\Documentos\GITHUB\BaseDeDatos.db"));
                 //options.UseSqlServer(Configuration.GetConnectionString("AgendaDeTurnosContext")));
         }
 
@@ -51,6 +50,7 @@ namespace AgendaDeTurnos
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
