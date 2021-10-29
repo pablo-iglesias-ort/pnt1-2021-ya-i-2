@@ -6,41 +6,42 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AgendaDeTurnos.Models
 {
-    public class Usuario
+    public abstract class Usuario
     {
-        #region Atributos o Propiedades
-
         [Key]
-        [Required(ErrorMessage ="el id es requerido")]
         public Guid Id { get; set; }
 
-        [Display(Name = "Nombre")]
-        [Required(ErrorMessage = "el nombre es requerido")]
-        public string nombre { get; set; }
+        [Required(ErrorMessage = "El Nombre es requerido")]
+        public string Nombre { get; set; }
 
-        [Display(Name = "Email")]
-        [EmailAddress(ErrorMessage = "Ingrese una dirección de correo electrónico válida")]
-        public string email { get; set; }
+        [Required(ErrorMessage = "El Apellido es requerido")]
+        public string Apellido { get; set; }
+
+        [Required(ErrorMessage = "El Dni es requerido")]
+        public string Dni { get; set; }
+
+        [EmailAddress(ErrorMessage = "Ingrese un Email válida")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "el Telefono es requerido")]
+        public string Telefono { get; set; }
+
+        [Required(ErrorMessage = "el Telefono es requerido")]
+        public string Direccion { get; set; }
 
         [Display(Name = "Fecha de Alta")]
+        [Required(ErrorMessage = "La Fecha de Alta es requerido")]
         [DataType(DataType.Date)]
-        [Required(ErrorMessage = "la fecha de alta es requerido")]
-        public DateTime fechaAlta { get; set; }
+        public DateTime FechaAlta { get; set; }
 
         [Display(Name = "Contraseña")]
         [StringLength(20, MinimumLength = 5,ErrorMessage = "La {0} debe tener {2} de mínimo")]
-        [Required(ErrorMessage = "el password es requerido")]
-        public string password { get; set; }
+        [Required(ErrorMessage = "El Contraseña es requerido")]
+        public string Password { get; set; }
 
         [Display(Name = "Rol")]
-        [Required(ErrorMessage = "el rol es requerido")]
-        public string rol { get; set; }
-
-        #endregion
-
-        #region Metodos 
-
-        #endregion
+        [Required(ErrorMessage = "El Rol es requerido")]
+        public abstract Rol Rol { get;}
 
     }
 }

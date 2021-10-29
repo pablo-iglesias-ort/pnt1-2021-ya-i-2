@@ -8,11 +8,9 @@ namespace AgendaDeTurnos.Models
 {
     public class Prestacion
     {
-        #region Atributos o Propiedades
-
         [Key]
         [Required(ErrorMessage = "el id es requerido")]
-        public Guid Id { get; set; }
+        public Guid PrestacionId { get; set; }
 
         [Required(ErrorMessage = "el nombre es requerido")]
         public string Nombre { get; set; }
@@ -23,12 +21,10 @@ namespace AgendaDeTurnos.Models
 
         [Required(ErrorMessage = "el precio es requerido")]
         public double Precio { get; set; }
-        public Profesional Profesionales { get; set; }
-     
-        #endregion
 
-        #region Metodos 
+        // Relaciones
+        public IEnumerable<Profesional> Profesionales { get; set; }
 
-        #endregion
+       
     }
 }

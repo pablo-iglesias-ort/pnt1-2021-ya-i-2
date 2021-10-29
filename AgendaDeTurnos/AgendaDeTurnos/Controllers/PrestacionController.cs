@@ -7,26 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AgendaDeTurnos.Data;
 using AgendaDeTurnos.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace AgendaDeTurnos.Controllers
 {
-    public class UsuarioController : Controller
+    public class PrestacionController : Controller
     {
         private readonly AgendaDeTurnosContext _context;
 
-        public UsuarioController(AgendaDeTurnosContext context)
+        public PrestacionController(AgendaDeTurnosContext context)
         {
             _context = context;
         }
 
-        // GET: Usuario
+        // GET: Prestacion
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Usuario.ToListAsync());
+            return View(await _context.Prestacion.ToListAsync());
         }
 
-        // GET: Usuario/Details/5
+        // GET: Prestacion/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -34,40 +33,40 @@ namespace AgendaDeTurnos.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.Usuario
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (usuario == null)
+            var prestacion = await _context.Prestacion
+                .FirstOrDefaultAsync(m => m.PrestacionId == id);
+            if (prestacion == null)
             {
                 return NotFound();
             }
 
-            return View(usuario);
+            return View(prestacion);
         }
 
-        // GET: Usuario/Create
+        // GET: Prestacion/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Usuario/Create
+        // POST: Prestacion/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,nombre,email,fechaAlta,password,rol")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("PrestacionId,Nombre,Descripcion,Duracion,Precio")] Prestacion prestacion)
         {
             if (ModelState.IsValid)
             {
-                usuario.Id = Guid.NewGuid();
-                _context.Add(usuario);
+                prestacion.PrestacionId = Guid.NewGuid();
+                _context.Add(prestacion);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(usuario);
+            return View(prestacion);
         }
 
-        // GET: Usuario/Edit/5
+        // GET: Prestacion/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -75,22 +74,22 @@ namespace AgendaDeTurnos.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.Usuario.FindAsync(id);
-            if (usuario == null)
+            var prestacion = await _context.Prestacion.FindAsync(id);
+            if (prestacion == null)
             {
                 return NotFound();
             }
-            return View(usuario);
+            return View(prestacion);
         }
 
-        // POST: Usuario/Edit/5
+        // POST: Prestacion/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,nombre,email,fechaAlta,password,rol")] Usuario usuario)
+        public async Task<IActionResult> Edit(Guid id, [Bind("PrestacionId,Nombre,Descripcion,Duracion,Precio")] Prestacion prestacion)
         {
-            if (id != usuario.Id)
+            if (id != prestacion.PrestacionId)
             {
                 return NotFound();
             }
@@ -99,12 +98,12 @@ namespace AgendaDeTurnos.Controllers
             {
                 try
                 {
-                    _context.Update(usuario);
+                    _context.Update(prestacion);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsuarioExists(usuario.Id))
+                    if (!PrestacionExists(prestacion.PrestacionId))
                     {
                         return NotFound();
                     }
@@ -115,10 +114,10 @@ namespace AgendaDeTurnos.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(usuario);
+            return View(prestacion);
         }
 
-        // GET: Usuario/Delete/5
+        // GET: Prestacion/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -126,30 +125,30 @@ namespace AgendaDeTurnos.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.Usuario
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (usuario == null)
+            var prestacion = await _context.Prestacion
+                .FirstOrDefaultAsync(m => m.PrestacionId == id);
+            if (prestacion == null)
             {
                 return NotFound();
             }
 
-            return View(usuario);
+            return View(prestacion);
         }
 
-        // POST: Usuario/Delete/5
+        // POST: Prestacion/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var usuario = await _context.Usuario.FindAsync(id);
-            _context.Usuario.Remove(usuario);
+            var prestacion = await _context.Prestacion.FindAsync(id);
+            _context.Prestacion.Remove(prestacion);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UsuarioExists(Guid id)
+        private bool PrestacionExists(Guid id)
         {
-            return _context.Usuario.Any(e => e.Id == id);
+            return _context.Prestacion.Any(e => e.PrestacionId == id);
         }
     }
 }

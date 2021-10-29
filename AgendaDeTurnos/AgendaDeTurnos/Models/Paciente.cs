@@ -1,35 +1,24 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace AgendaDeTurnos.Models
 {
-    public class Paciente:Persona
+    public class Paciente : Usuario
     {
-        #region Atributos o Propiedades
-
-        [Key]
-        [Required(ErrorMessage = "el id es requerido")]
-        public Guid IdPaciente { get; set; }
-
-        [Required(ErrorMessage = "la fecha de alta requerida")]
-        public DateTime fechaAlta { get; set; }
-
-        [Required(ErrorMessage = "el email es requerido")]
-        [EmailAddress(ErrorMessage = "Ingrese una dirección de correo electrónico válida")]
-        public string email { get; set; }
-
         [Required(ErrorMessage = "la obra social es requerida")]
-        public string obraSocial { get; set; }
+        public string ObraSocial { get; set; }
 
-        public List<Turno> Turno { get; set; }// propiedad de navegacion del turnos 
+        public override Rol Rol => Rol.Paciente;
 
-        #endregion
 
-        #region Metodos 
+        // Relaciones
 
-        #endregion
+        [NotMapped]
+        public IEnumerable<Turno> Turnos { get; set; }
     }
 }

@@ -13,8 +13,10 @@ namespace AgendaDeTurnos.Data
             : base(options)
         {
         }
-
-        public DbSet<AgendaDeTurnos.Models.Usuario> Usuario { get; set; }
-        public DbSet<AgendaDeTurnos.Models.Persona> Persona { get; set; }
+        public DbSet<AgendaDeTurnos.Models.Paciente> Paciente { get; set; }
+        public DbSet<AgendaDeTurnos.Models.Profesional> Profesional { get; set; }
+        public DbSet<AgendaDeTurnos.Models.Administrador> Administrador { get; set; }
+        public DbSet<AgendaDeTurnos.Models.Prestacion> Prestacion { get; set; }
+        public DbSet<AgendaDeTurnos.Models.Turno> Turno { get; set; }
     }
 }
