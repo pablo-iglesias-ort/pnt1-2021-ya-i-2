@@ -28,7 +28,7 @@ namespace AgendaDeTurnos
             services.AddControllersWithViews();
 
             services.AddDbContext<AgendaDeTurnosContext>(options =>
-                options.UseSqlite(@"Data Source=D:\Documentos\GITHUB\pnt1-2021-ya-i-2\AgendaDeTurnos\AgendaDeTurnos\BaseDeDatos.db"));
+                options.UseSqlite(@"Data Source=C:\Users\jbonalde\OneDrive - AXXON CONSULTING\Documentos\NT1\pnt1-2021-ya-i-2\AgendaDeTurnos\AgendaDeTurnos\BaseDeDatos.db"));
                 //options.UseSqlServer(Configuration.GetConnectionString("AgendaDeTurnosContext")));
         }
 

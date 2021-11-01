@@ -49,8 +49,32 @@ namespace AgendaDeTurnos.Controllers
         // GET: Turno/Create
         public IActionResult Create()
         {
+            //1 verificar si el paciente actual tiene un turno activo 
+            //2 Agragar el turno al paciente en estado activo
+
             ViewData["PacienteId"] = new SelectList(_context.Paciente, "Id", "Apellido");
-            ViewData["ProfesionalId"] = new SelectList(_context.Paciente, "Id", "Apellido");
+            ViewData["ProfesionalId"] = new SelectList(_context.Profesional, "Id", "Apellido");
+            return View();
+        }
+
+        public IActionResult SelecionPrestacion()
+        {
+            ViewData["ListPrestaciones"] = new SelectList(_context.Prestacion, "PrestacionId", "Descripcion");
+            return View();
+        }
+
+        public IActionResult SelecionProfecional(Prestacion Prestacion)
+        {
+            var profe = _context.Profesional.Where(profe => profe.PrestacionId == Prestacion.PrestacionId);
+            ViewData["ListProfecional"] = new SelectList(profe, "Id","Nombre");
+            return View();
+        }
+
+        public IActionResult ListaTurnosDisponibles(Profesional Profecional)
+        {
+            //1 crear los turnos de 7 dias en adelante de la fecha actual en memoria  y tomar en cuenta el horario del profecional
+            //2 Eliminar los turnos ya tomado 
+
             return View();
         }
 
