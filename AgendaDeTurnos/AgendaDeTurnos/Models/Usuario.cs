@@ -21,26 +21,24 @@ namespace AgendaDeTurnos.Models
         public string Dni { get; set; }
 
         [EmailAddress(ErrorMessage = "Ingrese un Email válida")]
+        [Required]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "el Telefono es requerido")]
         public string Telefono { get; set; }
 
-        [Required(ErrorMessage = "el Telefono es requerido")]
         public string Direccion { get; set; }
 
         [Display(Name = "Fecha de Alta")]
-        [Required(ErrorMessage = "La Fecha de Alta es requerido")]
         [DataType(DataType.Date)]
         public DateTime FechaAlta { get; set; }
 
         [Display(Name = "Contraseña")]
-        [StringLength(20, MinimumLength = 5,ErrorMessage = "La {0} debe tener {2} de mínimo")]
-        [Required(ErrorMessage = "El Contraseña es requerido")]
+       // [StringLength(20, MinimumLength = 5,ErrorMessage = "La {0} debe tener {2} de mínimo")]
+        [Required(ErrorMessage = "La Contraseña es requerido")]
         public string Password { get; set; }
 
         [Display(Name = "Rol")]
-        [Required(ErrorMessage = "El Rol es requerido")]
         public abstract Rol Rol { get;}
 
     }

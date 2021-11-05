@@ -20,8 +20,7 @@ namespace AgendaDeTurnos.Models
         [Required(ErrorMessage = "La fecha de  alta es requerida")]
         public DateTime FechaAlta { get; set; }
         
-        [Display(Name = "Descripcion De Cancelacion")]
-        [Required(ErrorMessage = "La descripcion es requerida")]
+        [Display(Name = "Descripcion De Cancelacion")]        
         public string DescripcionCancelacion { get; set; }
 
 

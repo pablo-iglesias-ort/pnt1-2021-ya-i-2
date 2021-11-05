@@ -11,6 +11,7 @@ namespace AgendaDeTurnos.Models
     public class Paciente : Usuario
     {
         [Required(ErrorMessage = "la obra social es requerida")]
+        [Display(Name = "Obra Social")]
         public string ObraSocial { get; set; }
 
         public override Rol Rol => Rol.Paciente;

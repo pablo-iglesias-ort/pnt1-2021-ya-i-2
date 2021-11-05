@@ -17,6 +17,8 @@ namespace AgendaDeTurnos.Models
 
         [Required(ErrorMessage = "la descripcion es requerida")]
         public string Descripcion { get; set; }
+
+        [DataType(DataType.Time)]
         public DateTime Duracion { get; set; }
 
         [Required(ErrorMessage = "el precio es requerido")]

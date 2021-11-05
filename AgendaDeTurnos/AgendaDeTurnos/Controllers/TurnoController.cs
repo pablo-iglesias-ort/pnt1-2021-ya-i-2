@@ -59,23 +59,28 @@ namespace AgendaDeTurnos.Controllers
 
         public IActionResult SelecionPrestacion()
         {
+            var userId = Guid.Parse(User.FindFirst("UserId").Value);
             ViewData["ListPrestaciones"] = new SelectList(_context.Prestacion, "PrestacionId", "Descripcion");
             return View();
         }
 
-        public IActionResult SelecionProfecional(Prestacion Prestacion)
+        public IActionResult SelecionProfesional(Prestacion Prestacion)
         {
             var profe = _context.Profesional.Where(profe => profe.PrestacionId == Prestacion.PrestacionId);
-            ViewData["ListProfecional"] = new SelectList(profe, "Id","Nombre");
+            ViewData["ListProfesional"] = new SelectList(profe, "Id","Nombre");
             return View();
         }
 
-        public IActionResult ListaTurnosDisponibles(Profesional Profecional)
+        public IActionResult ListaTurnosDisponibles(Profesional profesional)
         {
             //1 crear los turnos de 7 dias en adelante de la fecha actual en memoria  y tomar en cuenta el horario del profecional
             //2 Eliminar los turnos ya tomado 
+            var turnos = _context.Turno
+                        .Include(t => t.Profesional)
+                        .Where(t => t.ProfesionalId == profesional.Id && t.Confirmado && t.Fecha <= DateTime.Today.AddDays(7) && t.PacienteId == null)
+                        .ToList();
 
-            return View();
+            return View(turnos);
         }
 
         // POST: Turno/Create

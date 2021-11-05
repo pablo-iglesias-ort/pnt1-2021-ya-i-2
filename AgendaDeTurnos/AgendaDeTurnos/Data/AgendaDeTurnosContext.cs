@@ -18,5 +18,6 @@ namespace AgendaDeTurnos.Data
         public DbSet<AgendaDeTurnos.Models.Administrador> Administrador { get; set; }
         public DbSet<AgendaDeTurnos.Models.Prestacion> Prestacion { get; set; }
         public DbSet<AgendaDeTurnos.Models.Turno> Turno { get; set; }
+        public DbSet<AgendaDeTurnos.Models.Usuario> Usuario { get; set; }
     }
 }
