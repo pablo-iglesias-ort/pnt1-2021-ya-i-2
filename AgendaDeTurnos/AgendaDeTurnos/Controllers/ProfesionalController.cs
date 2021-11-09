@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AgendaDeTurnos.Data;
 using AgendaDeTurnos.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AgendaDeTurnos.Controllers
 {
+    [Authorize]
     public class ProfesionalController : Controller
     {
         private readonly AgendaDeTurnosContext _context;
@@ -45,6 +47,7 @@ namespace AgendaDeTurnos.Controllers
             return View(profesional);
         }
 
+        [Authorize(Roles = nameof(Rol.Administrador))]
         // GET: Profesionales/Create
         public IActionResult Create()
         {
@@ -57,6 +60,7 @@ namespace AgendaDeTurnos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(Rol.Administrador))]
         public async Task<IActionResult> Create([Bind("Matricula,HoraInicio,HoraFin,PrestacionId,Id,Nombre,Apellido,Dni,Email,Telefono,Direccion,FechaAlta,Password")] Profesional profesional)
         {
             if (ModelState.IsValid)
@@ -70,6 +74,7 @@ namespace AgendaDeTurnos.Controllers
             return View(profesional);
         }
 
+        [Authorize(Roles = nameof(Rol.Administrador))]
         // GET: Profesionales/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
@@ -92,6 +97,7 @@ namespace AgendaDeTurnos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(Rol.Administrador))]
         public async Task<IActionResult> Edit(Guid id, [Bind("Matricula,HoraInicio,HoraFin,PrestacionId,Id,Nombre,Apellido,Dni,Email,Telefono,Direccion,FechaAlta,Password")] Profesional profesional)
         {
             if (id != profesional.Id)
@@ -123,6 +129,7 @@ namespace AgendaDeTurnos.Controllers
             return View(profesional);
         }
 
+        [Authorize(Roles = nameof(Rol.Administrador))]
         // GET: Profesionales/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
@@ -145,6 +152,7 @@ namespace AgendaDeTurnos.Controllers
         // POST: Profesionales/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(Rol.Administrador))]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var profesional = await _context.Profesional.FindAsync(id);

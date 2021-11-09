@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AgendaDeTurnos.Controllers
 {
+    [AllowAnonymous]
     public class UsuariosController : Controller
     {
         private readonly AgendaDeTurnosContext _context;

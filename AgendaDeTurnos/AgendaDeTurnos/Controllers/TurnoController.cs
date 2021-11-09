@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AgendaDeTurnos.Data;
 using AgendaDeTurnos.Models;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AgendaDeTurnos.Controllers
 {
+    [Authorize]
     public class TurnoController : Controller
     {
         private readonly AgendaDeTurnosContext _context;
@@ -50,16 +51,16 @@ namespace AgendaDeTurnos.Controllers
         // GET: Turno/Create
         public IActionResult Create()
         {
-            ViewData["ListaProfesional"] = new SelectList(_context.Profesional,)
+            //1 verificar si el paciente actual tiene un turno activo 
+            //2 Agragar el turno al paciente en estado activo
+
+            ViewData["PacienteId"] = new SelectList(_context.Paciente, "Id", "Apellido");
+            ViewData["ProfesionalId"] = new SelectList(_context.Profesional, "Id", "Apellido");
             return View();
         }
 
         public IActionResult SelecionPrestacion()
         {
-
-            //1 verificar si el paciente actual tiene un turno activo 
-            //2 Agragar el turno al paciente en estado 
-
             var userId = Guid.Parse(User.FindFirst("UserId").Value);
             ViewData["ListPrestaciones"] = new SelectList(_context.Prestacion, "PrestacionId", "Descripcion");
             return View();
@@ -67,22 +68,10 @@ namespace AgendaDeTurnos.Controllers
 
         public IActionResult SelecionProfesional(Prestacion Prestacion)
         {
-            var profes = _context.Profesional;
-            IQueryable<Profesional> profe;
-
-            if (User.FindFirst(ClaimTypes.Role).Value == Rol.Administrador.ToString()){
-                ViewData["ListProfesional"] = new SelectList(profes, "Id", "Nombre");
-            }
-            else {
-                 profe = profes.Where(profe => profe.PrestacionId == Prestacion.PrestacionId);
-                ViewData["ListProfesional"] = new SelectList(profe, "Id", "Nombre");
-
-            }
-
+            var profe = _context.Profesional.Where(profe => profe.PrestacionId == Prestacion.PrestacionId);
+            ViewData["ListProfesional"] = new SelectList(profe, "Id","Nombre");
             return View();
         }
-
-     
 
         public IActionResult ListaTurnosDisponibles(Profesional profesional)
         {
@@ -103,9 +92,7 @@ namespace AgendaDeTurnos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Fecha,Confirmado,Activo,FechaAlta,DescripcionCancelacion,PacienteId,ProfesionalId")] Turno turno)
         {
-
-            turno.FechaAlta = DateTime.Now;
-            if (ModelState.IsValid && !TurnoExists(new Guid(), turno ))
+            if (ModelState.IsValid)
             {
                 turno.Id = Guid.NewGuid();
                 _context.Add(turno);
@@ -203,10 +190,9 @@ namespace AgendaDeTurnos.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TurnoExists(Guid id,Turno turno = null)
+        private bool TurnoExists(Guid id)
         {
-           if(turno!=null) return _context.Turno.Any(e => e.Fecha == turno.Fecha && e.ProfesionalId == turno.ProfesionalId && e.PacienteId == turno.PacienteId && turno.Activo == true);
-           return _context.Turno.Any(e => e.Id == id);
+            return _context.Turno.Any(e => e.Id == id);
         }
     }
 }
