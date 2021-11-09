@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AgendaDeTurnos.Data;
 using AgendaDeTurnos.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AgendaDeTurnos.Controllers
 {
+    [Authorize]
     public class PrestacionController : Controller
     {
         private readonly AgendaDeTurnosContext _context;
@@ -43,6 +45,7 @@ namespace AgendaDeTurnos.Controllers
             return View(prestacion);
         }
 
+        [Authorize(Roles = nameof(Rol.Administrador))]
         // GET: Prestacion/Create
         public IActionResult Create()
         {
@@ -54,6 +57,7 @@ namespace AgendaDeTurnos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(Rol.Administrador))]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion,Duracion,Precio")] Prestacion prestacion)
         {
             if (ModelState.IsValid)
@@ -67,6 +71,7 @@ namespace AgendaDeTurnos.Controllers
         }
 
         // GET: Prestacion/Edit/5
+        [Authorize(Roles = nameof(Rol.Administrador))]
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -86,6 +91,7 @@ namespace AgendaDeTurnos.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = nameof(Rol.Administrador))]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Nombre,Descripcion,Duracion,Precio")] Prestacion prestacion)
         {
@@ -118,6 +124,7 @@ namespace AgendaDeTurnos.Controllers
         }
 
         // GET: Prestacion/Delete/5
+        [Authorize(Roles = nameof(Rol.Administrador))]
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -138,6 +145,7 @@ namespace AgendaDeTurnos.Controllers
         // POST: Prestacion/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(Rol.Administrador))]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var prestacion = await _context.Prestacion.FindAsync(id);

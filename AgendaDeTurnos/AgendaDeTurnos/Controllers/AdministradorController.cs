@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AgendaDeTurnos.Data;
 using AgendaDeTurnos.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AgendaDeTurnos.Controllers
 {
+    [Authorize(Roles = nameof(Rol.Administrador))]
     public class AdministradorController : Controller
     {
         private readonly AgendaDeTurnosContext _context;
