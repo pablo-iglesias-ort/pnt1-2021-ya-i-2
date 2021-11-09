@@ -15,15 +15,12 @@ namespace AgendaDeTurnos.Models
         [Required(ErrorMessage = "La fecha es requerida")]
         public DateTime Fecha { get; set; }
         public bool Confirmado { get; set; } = false;
-        public bool Activo { get; set; } = true;
+        public bool Activo { get; set; } = false;
 
-        [Required(ErrorMessage = "La fecha de  alta es requerida")]
-        public DateTime FechaAlta { get; set; }
+         public DateTime FechaAlta { get; set; }
         
         [Display(Name = "Descripcion De Cancelacion")]        
         public string DescripcionCancelacion { get; set; }
-
-
         // Relaciones
 
         [ForeignKey(nameof(Paciente))]
@@ -32,7 +29,9 @@ namespace AgendaDeTurnos.Models
 
 
         [ForeignKey(nameof(Profesional))]
+        [Display(Name = "Profesional")]
         public Guid ProfesionalId { get; set; }
+    
         public Profesional Profesional { get; set; }
     }
 }

@@ -7,7 +7,14 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="SelecionPrestacion">Create New</a>
+    @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Administrador.ToString())
+    {
+        <a asp-action="Create">Create New</a>
+    }
+    else
+    {
+        <a asp-action="SelecionPrestacion">Agendar turno </a>
+    }
 </p>
 <table class="table">
     <thead>
