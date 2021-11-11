@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AgendaDeTurnos.Data;
 using AgendaDeTurnos.Models;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
 namespace AgendaDeTurnos.Controllers
@@ -24,8 +25,18 @@ namespace AgendaDeTurnos.Controllers
         // GET: Turno
         public async Task<IActionResult> Index()
         {
-            var agendaDeTurnosContext = _context.Turno.Include(t => t.Paciente).Include(t => t.Profesional);
-            return View(await agendaDeTurnosContext.ToListAsync());
+            IQueryable<Turno> agendaDeTurnosContext;
+            if (User.FindFirst(ClaimTypes.Role).Value == Rol.Administrador.ToString())
+            {
+                agendaDeTurnosContext = _context.Turno.Include(t => t.Paciente).Include(t => t.Profesional);
+                return View(await agendaDeTurnosContext.ToListAsync());
+            }
+            else
+            {
+                var userId = Guid.Parse(User.FindFirst("UserId").Value);
+                agendaDeTurnosContext = _context.Turno.Include(t => t.Paciente).Include(t => t.Profesional).Where<Turno>(t => t.PacienteId == userId || t.ProfesionalId == userId);
+                return View(await agendaDeTurnosContext.ToListAsync());
+            }
         }
 
         // GET: Turno/Details/5
@@ -51,16 +62,17 @@ namespace AgendaDeTurnos.Controllers
         // GET: Turno/Create
         public IActionResult Create()
         {
-            //1 verificar si el paciente actual tiene un turno activo 
-            //2 Agragar el turno al paciente en estado activo
 
-            ViewData["PacienteId"] = new SelectList(_context.Paciente, "Id", "Apellido");
-            ViewData["ProfesionalId"] = new SelectList(_context.Profesional, "Id", "Apellido");
+            ViewData["ListaProfesional"] = new SelectList(_context.Profesional, "Id", "Apellido");
             return View();
         }
 
         public IActionResult SelecionPrestacion()
         {
+
+            //1 verificar si el paciente actual tiene un turno activo 
+            //2 Agragar el turno al paciente en estado 
+
             var userId = Guid.Parse(User.FindFirst("UserId").Value);
             ViewData["ListPrestaciones"] = new SelectList(_context.Prestacion, "PrestacionId", "Descripcion");
             return View();
@@ -68,10 +80,24 @@ namespace AgendaDeTurnos.Controllers
 
         public IActionResult SelecionProfesional(Prestacion Prestacion)
         {
-            var profe = _context.Profesional.Where(profe => profe.PrestacionId == Prestacion.PrestacionId);
-            ViewData["ListProfesional"] = new SelectList(profe, "Id","Nombre");
+            var profes = _context.Profesional;
+            IQueryable<Profesional> profe;
+
+            if (User.FindFirst(ClaimTypes.Role).Value == Rol.Administrador.ToString())
+            {
+                ViewData["ListProfesional"] = new SelectList(profes, "Id", "Nombre");
+            }
+            else
+            {
+                profe = profes.Where(profe => profe.PrestacionId == Prestacion.PrestacionId);
+                ViewData["ListProfesional"] = new SelectList(profe, "Id", "Nombre");
+
+            }
+
             return View();
         }
+
+
 
         public IActionResult ListaTurnosDisponibles(Profesional profesional)
         {
@@ -92,7 +118,9 @@ namespace AgendaDeTurnos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Fecha,Confirmado,Activo,FechaAlta,DescripcionCancelacion,PacienteId,ProfesionalId")] Turno turno)
         {
-            if (ModelState.IsValid)
+
+            turno.FechaAlta = DateTime.Now;
+            if (ModelState.IsValid && !TurnoExists(new Guid(), turno))
             {
                 turno.Id = Guid.NewGuid();
                 _context.Add(turno);
@@ -100,7 +128,7 @@ namespace AgendaDeTurnos.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PacienteId"] = new SelectList(_context.Paciente, "Id", "Apellido", turno.PacienteId);
-            ViewData["ProfesionalId"] = new SelectList(_context.Paciente, "Id", "Apellido", turno.ProfesionalId);
+            ViewData["ProfesionalId"] = new SelectList(_context.Profesional, "Id", "Apellido", turno.ProfesionalId);
             return View(turno);
         }
 
@@ -190,9 +218,87 @@ namespace AgendaDeTurnos.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TurnoExists(Guid id)
+        private bool TurnoExists(Guid id, Turno turno = null)
         {
+            if (turno != null) return _context.Turno.Any(e => e.Fecha == turno.Fecha && e.ProfesionalId == turno.ProfesionalId && e.PacienteId == turno.PacienteId && turno.Activo == true);
             return _context.Turno.Any(e => e.Id == id);
         }
+
+        public async Task<IActionResult> Confirmar(Guid id)
+        {
+
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var turno = _context.Turno.Include(t => t.Paciente).Include(t => t.Profesional).FirstOrDefault(t => t.Id == id);
+
+                if (turno.Confirmado) return RedirectToAction(nameof(Index)); // DEVOLVER UN ERROR 
+
+                turno.Confirmado = true;
+
+                _context.Update(turno);
+                await _context.SaveChangesAsync();
+
+
+            }
+            catch (Exception EX)
+            {
+                return NotFound();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Cancelar(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var turno = await _context.Turno.FindAsync(id);
+            if (turno == null)
+            {
+                return NotFound();
+            }
+            return View(turno);
+        }
+
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Cancelar(Guid id, [Bind("Id,DescripcionCancelacion")] Turno turno)
+        {
+
+            if (id == null )
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var Nuevoturno = _context.Turno.Include(t => t.Paciente).Include(t => t.Profesional).FirstOrDefault(t => t.Id == id);
+
+                if (turno.DescripcionCancelacion == null) return RedirectToAction(nameof(Index)); // DEVOLVER UN ERROR 
+
+                Nuevoturno.Activo = false;
+                Nuevoturno.DescripcionCancelacion = turno.DescripcionCancelacion;
+                Nuevoturno.Confirmado = false;
+                _context.Update(Nuevoturno);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception EX)
+            {
+                return NotFound();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
