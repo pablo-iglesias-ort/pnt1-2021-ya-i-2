@@ -105,8 +105,9 @@ namespace AgendaDeTurnos.Controllers
             //2 Eliminar los turnos ya tomado 
             var turnos = _context.Turno
                         .Include(t => t.Profesional)
-                        .Where(t => t.ProfesionalId == profesional.Id && t.Confirmado && t.Fecha <= DateTime.Today.AddDays(7) && t.PacienteId == null)
+                        .Where(t => t.ProfesionalId == profesional.Id && t.Confirmado &&  DateTime.Today.AddDays(7) <= t.Fecha  && t.PacienteId == null)
                         .ToList();
+
 
             return View(turnos);
         }
@@ -118,7 +119,7 @@ namespace AgendaDeTurnos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Fecha,Confirmado,Activo,FechaAlta,DescripcionCancelacion,PacienteId,ProfesionalId")] Turno turno)
         {
-
+            //hacer la valicadcion del horacio 
             turno.FechaAlta = DateTime.Now;
             if (ModelState.IsValid && !TurnoExists(new Guid(), turno))
             {
@@ -285,7 +286,11 @@ namespace AgendaDeTurnos.Controllers
             {
                 var Nuevoturno = _context.Turno.Include(t => t.Paciente).Include(t => t.Profesional).FirstOrDefault(t => t.Id == id);
 
-                if (turno.DescripcionCancelacion == null) return RedirectToAction(nameof(Index)); // DEVOLVER UN ERROR 
+                if (string.IsNullOrEmpty(turno.DescripcionCancelacion))
+                {
+                    ModelState.AddModelError(nameof(Turno.DescripcionCancelacion),"campo requerido");
+                    return View();
+                }
 
                 Nuevoturno.Activo = false;
                 Nuevoturno.DescripcionCancelacion = turno.DescripcionCancelacion;
