@@ -87,13 +87,6 @@ namespace AgendaDeTurnos.Data
 				context.SaveChanges();
 			}
 
-			if (!context.Turno.Any())
-			{
-
-				
-				context.SaveChanges();
-			}
-
 			
 
 			if (!context.Administrador.Any())
