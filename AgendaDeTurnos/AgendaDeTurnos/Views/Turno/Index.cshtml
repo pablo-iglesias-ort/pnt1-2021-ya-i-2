@@ -68,6 +68,14 @@
                 @Html.DisplayFor(modelItem => item.Profesional.Apellido)
             </td>
             <td>
+                @if (!item.Confirmado)
+                {
+                <a asp-action="Confirmar" asp-route-id="@item.Id">Confirmar |</a>
+                }
+                <a asp-action="Cancelar" asp-route-id="@item.Id">Cancelar</a> |
+
+
+
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>

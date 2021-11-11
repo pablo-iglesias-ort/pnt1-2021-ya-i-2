@@ -21,23 +21,25 @@
                         <li class="nav-item float-left">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item float-left">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item float-left">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Paciente" asp-action="Index">Pacientes</a>
-                        </li>
-                        <li class="nav-item float-left">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Turno" asp-action="Index">Turnos</a>
-                        </li>
-                        <li class="nav-item float-left">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Prestacion" asp-action="Index">Prestacion</a>
-                        </li>
-                        <li class="nav-item float-left">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Profesional" asp-action="Index">Profesional</a>
-                        </li>
-                       
-                    </ul>
+                        @if (@User.FindFirstValue(ClaimTypes.Role) == Rol.Administrador.ToString())
+                        {
+                            <li class="nav-item float-left">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Paciente" asp-action="Index">Pacientes</a>
+                            </li>
+                            <li class="nav-item float-left">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Prestacion" asp-action="Index">Prestacion</a>
+                            </li>
+                            <li class="nav-item float-left">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Profesional" asp-action="Index">Profesional</a>
+                            </li>
+                        }
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item float-left">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Turno" asp-action="Index">Turnos</a>
+                            </li>
+                        }
+                        </ul>
                 </div>
                 @if (User.Identity.IsAuthenticated)
                 {

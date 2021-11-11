@@ -20,11 +20,11 @@ namespace AgendaDeTurnos.Models
          public DateTime FechaAlta { get; set; }
         
         [Display(Name = "Descripcion De Cancelacion")]        
-        public string DescripcionCancelacion { get; set; }
+        public string? DescripcionCancelacion { get; set; }
         // Relaciones
 
         [ForeignKey(nameof(Paciente))]
-        public Guid PacienteId { get; set; }
+        public Guid? PacienteId { get; set; }
         public Paciente Paciente { get; set; }
 
 
