@@ -26,7 +26,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Fecha)
             </th>
-            @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Administrador.ToString())
+            @if (User.FindFirst(ClaimTypes.Role).Value != Rol.Paciente.ToString())
             {
                 <th>
                     @Html.DisplayNameFor(model => model.Confirmado)
@@ -35,8 +35,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.Activo)
             </th>
+            @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Profesional.ToString())
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.Atendido)
+                </th>
+            }
+            
             <th>
                 @Html.DisplayNameFor(model => model.DescripcionCancelacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Paciente)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Profesional)
@@ -47,42 +57,59 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha)
+            </td>
+            @if (User.FindFirst(ClaimTypes.Role).Value != Rol.Paciente.ToString())
+            {
                 <td>
-                    @Html.DisplayFor(modelItem => item.Fecha)
+                    @Html.DisplayFor(modelItem => item.Confirmado)
                 </td>
-                @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Administrador.ToString())
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.Activo)
+            </td>
+            @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Profesional.ToString())
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Atendido)
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.DescripcionCancelacion)
+            </td>
+            @if (User.FindFirst(ClaimTypes.Role).Value != Rol.Paciente.ToString())
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Paciente.Apellido) 
+                    @Html.DisplayFor(modelItem => item.Paciente.Nombre)
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.Profesional.Apellido) 
+                @Html.DisplayFor(modelItem => item.Profesional.Nombre)
+            </td>
+            <td>
+                @if (User.FindFirst(ClaimTypes.Role).Value != Rol.Paciente.ToString() && !item.Confirmado && string.IsNullOrEmpty(item.DescripcionCancelacion))
                 {
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Confirmado)
-                    </td>
+                    <a asp-action="Confirmar" asp-route-id="@item.Id"> Confirmar |</a>
                 }
-                <td>
-                    @Html.DisplayFor(modelItem => item.Activo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DescripcionCancelacion)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Profesional.Apellido), 
-                    @Html.DisplayFor(modelItem => item.Profesional.Nombre)
-                </td>
-                <td>
-                    @if (User.FindFirst(ClaimTypes.Role).Value != Rol.Paciente.ToString() && !item.Confirmado && string.IsNullOrEmpty(item.DescripcionCancelacion))
-                    {
-                        <a asp-action="Confirmar" asp-route-id="@item.Id"> Confirmar |</a>
-                    }
 
-                    @if ((User.FindFirst(ClaimTypes.Role).Value != Rol.Paciente.ToString() && item.Confirmado) || (item.Activo && item.Confirmado))
-                    {
-                        <a asp-action="Cancelar" asp-route-id="@item.Id"> Cancelar |</a>
-                    }
+                @if ((User.FindFirst(ClaimTypes.Role).Value != Rol.Paciente.ToString() && item.Confirmado) || (item.Activo && item.Confirmado))
+                {
+                    <a asp-action="Cancelar" asp-route-id="@item.Id"> Cancelar |</a>
+                }
 
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a asp-action="Details" asp-route-id="@item.Id">Details |</a>
 
+                @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Profesional.ToString() && !item.Atendido && item.Confirmado && item.Activo)
+                {
+                    <a asp-action="Atendido" asp-route-id="@item.Id"> Atendido</a>
+                }
 
-                </td>
-            </tr>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

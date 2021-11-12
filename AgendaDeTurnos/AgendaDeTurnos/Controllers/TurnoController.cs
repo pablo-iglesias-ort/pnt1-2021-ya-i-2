@@ -187,6 +187,36 @@ namespace AgendaDeTurnos.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = nameof(Rol.Profesional))]
+        public async Task<IActionResult> Atendido(Guid id)
+        {
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var turno = _context.Turno.Include(t => t.Paciente).Include(t => t.Profesional).FirstOrDefault(t => t.Id == id);
+
+                turno.Atendido = true;
+                turno.Activo = false;
+                turno.Confirmado = false;
+                turno.DescripcionCancelacion = "Turno atendido";
+
+                _context.Update(turno);
+                await _context.SaveChangesAsync();
+
+
+            }
+            catch (Exception EX)
+            {
+                return NotFound();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
         public async Task<IActionResult> Cancelar(Guid? id)
         {
             if (id == null)

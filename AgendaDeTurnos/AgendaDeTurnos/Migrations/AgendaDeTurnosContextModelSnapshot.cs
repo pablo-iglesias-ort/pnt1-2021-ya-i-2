@@ -50,6 +50,9 @@ namespace AgendaDeTurnos.Migrations
                     b.Property<bool>("Activo")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("Atendido")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("Confirmado")
                         .HasColumnType("INTEGER");
 

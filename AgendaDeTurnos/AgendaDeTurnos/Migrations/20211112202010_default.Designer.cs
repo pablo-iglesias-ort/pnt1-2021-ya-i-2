@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgendaDeTurnos.Migrations
 {
     [DbContext(typeof(AgendaDeTurnosContext))]
-    [Migration("20211112174744_default")]
+    [Migration("20211112202010_default")]
     partial class @default
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,9 @@ namespace AgendaDeTurnos.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("Activo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Atendido")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("Confirmado")

@@ -17,11 +17,14 @@ namespace AgendaDeTurnos.Models
         public DateTime Fecha { get; set; }
         public bool Confirmado { get; set; } = false;
         public bool Activo { get; set; } = false;
+        public bool Atendido { get; set; } = false;
 
-         public DateTime FechaAlta { get; set; }
+        public DateTime FechaAlta { get; set; }
         
         [Display(Name = "Descripcion De Cancelacion")]        
         public string? DescripcionCancelacion { get; set; }
+
+
         // Relaciones
 
         [ForeignKey(nameof(Paciente))]

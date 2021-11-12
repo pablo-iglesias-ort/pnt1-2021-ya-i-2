@@ -53,9 +53,9 @@ namespace AgendaDeTurnos.Controllers
                         // Creamos los Claims (credencial de acceso con informacion del usuario)
                         ClaimsIdentity identidad = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
 
-                        // Agregamos a la credencial el email del usuario
+                        // Agregamos a la credencial el email
                         identidad.AddClaim(new Claim(ClaimTypes.Name, email));
-                        // Agregamos a la credencial el nombre del estudiante/administrador
+                        // Agregamos a la credencial el nombre
                         identidad.AddClaim(new Claim(ClaimTypes.GivenName, user.Nombre));
                         // Agregamos a la credencial el Rol
                         identidad.AddClaim(new Claim(ClaimTypes.Role, user.Rol.ToString()));
