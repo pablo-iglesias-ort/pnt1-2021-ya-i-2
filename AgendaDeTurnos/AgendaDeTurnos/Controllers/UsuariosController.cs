@@ -104,6 +104,9 @@ namespace AgendaDeTurnos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Registrarse(Paciente paciente)
         {
+
+            //TODO: encriptar contraseña
+            //TODO: validar usuario existente
             if (ModelState.IsValid)
             {
                 paciente.Id = Guid.NewGuid();

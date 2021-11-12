@@ -42,12 +42,34 @@ namespace AgendaDeTurnos.Data
 				{
 					PrestacionId = Guid.NewGuid(),
 					Nombre = "Odontologia",
-					Descripcion = "Amor en los dientes",
+					Descripcion = "Odontologia",
+					Duracion = DateTime.Now,
+					Precio = 1000,
+
+				};
+
+				var usuarioPrestacion2 = new Prestacion
+				{
+					PrestacionId = Guid.NewGuid(),
+					Nombre = "Traumatologia",
+					Descripcion = "Traumatologia",
+					Duracion = DateTime.Now,
+					Precio = 1000,
+
+				};
+
+				var usuarioPrestacion3 = new Prestacion
+				{
+					PrestacionId = Guid.NewGuid(),
+					Nombre = "Ginecologia",
+					Descripcion = "Ginecologia",
 					Duracion = DateTime.Now,
 					Precio = 1000,
 
 				};
 				context.Prestacion.Add(usuarioPrestacion);
+				context.Prestacion.Add(usuarioPrestacion2);
+				context.Prestacion.Add(usuarioPrestacion3);
 
 				var usuarioProfesional = new Profesional
 				{
@@ -67,7 +89,47 @@ namespace AgendaDeTurnos.Data
 					Telefono = "1123123123",
 
 				};
+
+				var usuarioProfesional2 = new Profesional
+				{
+					Id = Guid.NewGuid(),
+					Nombre = "Profesional2",
+					Apellido = "Profesional2",
+					Dni = "40123456",
+					Password = "Profesional",
+					FechaAlta = DateTime.Now,
+					Direccion = "caba",
+					Email = "Profesional2@gmail.com",
+					HoraInicio = DateTime.Now,
+					HoraFin = DateTime.Now,
+					Matricula = "123721",
+					Prestacion = usuarioPrestacion2,
+					PrestacionId = usuarioPrestacion2.PrestacionId,
+					Telefono = "1123123123",
+
+				};
+
+				var usuarioProfesional3 = new Profesional
+				{
+					Id = Guid.NewGuid(),
+					Nombre = "Profesional3",
+					Apellido = "Profesional3",
+					Dni = "40123456",
+					Password = "Profesional",
+					FechaAlta = DateTime.Now,
+					Direccion = "caba",
+					Email = "Profesional3@gmail.com",
+					HoraInicio = DateTime.Now,
+					HoraFin = DateTime.Now,
+					Matricula = "123721",
+					Prestacion = usuarioPrestacion3,
+					PrestacionId = usuarioPrestacion3.PrestacionId,
+					Telefono = "1123123123",
+
+				};
 				context.Profesional.Add(usuarioProfesional);
+				context.Profesional.Add(usuarioProfesional2);
+				context.Profesional.Add(usuarioProfesional3);
 
 				var turno = new Turno
 				{

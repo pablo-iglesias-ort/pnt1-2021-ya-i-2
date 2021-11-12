@@ -105,7 +105,7 @@ namespace AgendaDeTurnos.Controllers
             //2 Eliminar los turnos ya tomado 
             var turnos = _context.Turno
                         .Include(t => t.Profesional)
-                        .Where(t => t.ProfesionalId == profesional.Id && t.Confirmado &&  DateTime.Today.AddDays(7) <= t.Fecha  && t.PacienteId == null)
+                        .Where(t => t.ProfesionalId == profesional.Id && t.Confirmado && t.Fecha <= DateTime.Today.AddDays(7) && t.PacienteId == null)
                         .ToList();
 
 
@@ -188,36 +188,6 @@ namespace AgendaDeTurnos.Controllers
             return View(turno);
         }
 
-        // GET: Turno/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var turno = await _context.Turno
-                .Include(t => t.Paciente)
-                .Include(t => t.Profesional)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (turno == null)
-            {
-                return NotFound();
-            }
-
-            return View(turno);
-        }
-
-        // POST: Turno/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var turno = await _context.Turno.FindAsync(id);
-            _context.Turno.Remove(turno);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
         private bool TurnoExists(Guid id, Turno turno = null)
         {
@@ -296,6 +266,31 @@ namespace AgendaDeTurnos.Controllers
                 Nuevoturno.DescripcionCancelacion = turno.DescripcionCancelacion;
                 Nuevoturno.Confirmado = false;
                 _context.Update(Nuevoturno);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception EX)
+            {
+                return NotFound();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Seleccionar(string id)
+        {
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var turno = _context.Turno.Include(t => t.Paciente).Include(t => t.Profesional).FirstOrDefault(t => t.Id == Guid.Parse(id));
+                var userId = Guid.Parse(User.FindFirst("UserId").Value);
+
+                turno.PacienteId = userId;
+                turno.Activo = true;
+                _context.Update(turno);
                 await _context.SaveChangesAsync();
             }
             catch (Exception EX)

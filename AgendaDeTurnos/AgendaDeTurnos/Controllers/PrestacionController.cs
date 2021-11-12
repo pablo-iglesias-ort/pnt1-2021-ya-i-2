@@ -93,7 +93,7 @@ namespace AgendaDeTurnos.Controllers
         [HttpPost]
         [Authorize(Roles = nameof(Rol.Administrador))]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Nombre,Descripcion,Duracion,Precio")] Prestacion prestacion)
+        public async Task<IActionResult> Edit(Guid id, [Bind("PrestacionId,Nombre,Descripcion,Duracion,Precio")] Prestacion prestacion)
         {
             if (id != prestacion.PrestacionId)
             {

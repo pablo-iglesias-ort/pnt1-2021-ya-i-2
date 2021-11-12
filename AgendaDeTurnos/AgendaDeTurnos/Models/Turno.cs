@@ -13,6 +13,7 @@ namespace AgendaDeTurnos.Models
         public Guid Id { get; set; }
 
         [Required(ErrorMessage = "La fecha es requerida")]
+        [Display(Name = "Fecha y Hora")]
         public DateTime Fecha { get; set; }
         public bool Confirmado { get; set; } = false;
         public bool Activo { get; set; } = false;
