@@ -4,15 +4,19 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Mis Turnos</h1>
-
 <p>
     @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Administrador.ToString())
     {
+        <h1>Turnos</h1>
+
         <a asp-action="Create">Create New</a>
     }
     else
     {
+        <h1>Mis Turnos</h1>
+
+        
+
         <a asp-action="SelecionPrestacion">Pedir un turno </a>
     }
 </p>
@@ -24,9 +28,9 @@
             </th>
             @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Administrador.ToString())
             {
-            <th>
-                @Html.DisplayNameFor(model => model.Confirmado)
-            </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Confirmado)
+                </th>
             }
             <th>
                 @Html.DisplayNameFor(model => model.Activo)
@@ -41,42 +45,44 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fecha)
-            </td>
-            @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Administrador.ToString())
-            {
+        @foreach (var item in Model)
+        {
+            <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Confirmado)
+                    @Html.DisplayFor(modelItem => item.Fecha)
                 </td>
-            }
-            <td>
-                @Html.DisplayFor(modelItem => item.Activo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DescripcionCancelacion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Profesional.Apellido)
-            </td>
-            <td>
-                @if (User.FindFirst(ClaimTypes.Role).Value != Rol.Paciente.ToString() && !item.Confirmado && string.IsNullOrEmpty(item.DescripcionCancelacion))
+                @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Administrador.ToString())
                 {
-                    <a asp-action="Confirmar" asp-route-id="@item.Id"> Confirmar |</a>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Confirmado)
+                    </td>
                 }
+                <td>
+                    @Html.DisplayFor(modelItem => item.Activo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescripcionCancelacion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Profesional.Apellido), 
+                    @Html.DisplayFor(modelItem => item.Profesional.Nombre)
+                </td>
+                <td>
+                    @if (User.FindFirst(ClaimTypes.Role).Value != Rol.Paciente.ToString() && !item.Confirmado && string.IsNullOrEmpty(item.DescripcionCancelacion))
+                    {
+                        <a asp-action="Confirmar" asp-route-id="@item.Id"> Confirmar |</a>
+                    }
 
-                @if ((User.FindFirst(ClaimTypes.Role).Value != Rol.Paciente.ToString() && item.Confirmado) || (item.Activo && item.Confirmado))
-                {
-                    <a asp-action="Cancelar" asp-route-id="@item.Id"> Cancelar |</a>
-                }
+                    @if ((User.FindFirst(ClaimTypes.Role).Value != Rol.Paciente.ToString() && item.Confirmado) || (item.Activo && item.Confirmado))
+                    {
+                        <a asp-action="Cancelar" asp-route-id="@item.Id"> Cancelar |</a>
+                    }
 
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
 
-                
-            </td>
-        </tr>
-}
+
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

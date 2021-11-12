@@ -24,9 +24,9 @@ namespace AgendaDeTurnos.Data
 					Nombre = "Paciente",
 					Apellido = "Paciente",
 					Dni = "50123456",
-					Email = "Paciente@gmail.com",
+					Email = "paciente@gmail.com",
 					Direccion = "CABA",
-					Password = seguridad.EncriptarPass("Paciente"),
+					Password = seguridad.EncriptarPass("paciente"),
 					FechaAlta = DateTime.Now,
 					ObraSocial = "La Mejor",
 					Telefono = "1234567890",
@@ -74,13 +74,13 @@ namespace AgendaDeTurnos.Data
 				var usuarioProfesional = new Profesional
 				{
 					Id = Guid.NewGuid(),
-					Nombre = "Profesional",
-					Apellido = "Profesional",
+					Nombre = "Luciano",
+					Apellido = "Sanchez",
 					Dni = "40123456",
-					Password = seguridad.EncriptarPass("Profesional"),
+					Password = seguridad.EncriptarPass("profesional"),
 					FechaAlta = DateTime.Now,
 					Direccion = "caba",
-					Email = "Profesional@gmail.com",
+					Email = "profesional@gmail.com",
 					HoraInicio = DateTime.Now,
 					HoraFin = DateTime.Now,
 					Matricula = "123721",
@@ -93,13 +93,13 @@ namespace AgendaDeTurnos.Data
 				var usuarioProfesional2 = new Profesional
 				{
 					Id = Guid.NewGuid(),
-					Nombre = "Profesional2",
-					Apellido = "Profesional2",
+					Nombre = "Santiago",
+					Apellido = "Martinez",
 					Dni = "40123456",
-					Password = seguridad.EncriptarPass("Profesional"),
+					Password = seguridad.EncriptarPass("profesional"),
 					FechaAlta = DateTime.Now,
 					Direccion = "caba",
-					Email = "Profesional2@gmail.com",
+					Email = "profesional2@gmail.com",
 					HoraInicio = DateTime.Now,
 					HoraFin = DateTime.Now,
 					Matricula = "123721",
@@ -112,13 +112,13 @@ namespace AgendaDeTurnos.Data
 				var usuarioProfesional3 = new Profesional
 				{
 					Id = Guid.NewGuid(),
-					Nombre = "Profesional3",
-					Apellido = "Profesional3",
+					Nombre = "Roberto",
+					Apellido = "Rodriguez",
 					Dni = "40123456",
-					Password = seguridad.EncriptarPass("Profesional"),
+					Password = seguridad.EncriptarPass("profesional"),
 					FechaAlta = DateTime.Now,
 					Direccion = "caba",
-					Email = "Profesional3@gmail.com",
+					Email = "profesional3@gmail.com",
 					HoraInicio = DateTime.Now,
 					HoraFin = DateTime.Now,
 					Matricula = "123721",
@@ -134,8 +134,8 @@ namespace AgendaDeTurnos.Data
 				var turno = new Turno
 				{
 					Id = Guid.NewGuid(),
-					Activo = true,
-					Confirmado = false,
+					Activo = false,
+					Confirmado = true,
 					Fecha = DateTime.Now,
 					FechaAlta = DateTime.Now,
 					Paciente = usuarioPaciente,
@@ -145,6 +145,148 @@ namespace AgendaDeTurnos.Data
 
 				};
 				context.Turno.AddRange(turno);
+
+				var turno2 = new Turno
+				{
+					Id = Guid.NewGuid(),
+					Activo = false,
+					Confirmado = true,
+					Fecha = DateTime.Now,
+					FechaAlta = DateTime.Now,
+					Paciente = null,
+					PacienteId = null,
+					Profesional = usuarioProfesional,
+					ProfesionalId = usuarioProfesional.Id,
+
+				};
+				context.Turno.AddRange(turno);
+
+				var turno3 = new Turno
+				{
+					Id = Guid.NewGuid(),
+					Activo = false,
+					Confirmado = true,
+					Fecha = DateTime.Now,
+					FechaAlta = DateTime.Now,
+					Paciente = null,
+					PacienteId = null,
+					Profesional = usuarioProfesional,
+					ProfesionalId = usuarioProfesional.Id,
+
+				};
+				context.Turno.AddRange(turno);
+
+				var turno4 = new Turno
+				{
+					Id = Guid.NewGuid(),
+					Activo = false,
+					Confirmado = false,
+					Fecha = DateTime.Now,
+					FechaAlta = DateTime.Now,
+					Paciente = null,
+					PacienteId = null,
+					Profesional = usuarioProfesional,
+					ProfesionalId = usuarioProfesional.Id,
+
+				};
+
+				var turno5 = new Turno
+				{
+					Id = Guid.NewGuid(),
+					Activo = false,
+					Confirmado = true,
+					Fecha = DateTime.Now,
+					FechaAlta = DateTime.Now,
+					Paciente = null,
+					PacienteId = null,
+					Profesional = usuarioProfesional2,
+					ProfesionalId = usuarioProfesional2.Id,
+
+				};
+				context.Turno.AddRange(turno);
+
+				var turno6 = new Turno
+				{
+					Id = Guid.NewGuid(),
+					Activo = false,
+					Confirmado = true,
+					Fecha = DateTime.Now,
+					FechaAlta = DateTime.Now,
+					Paciente = null,
+					PacienteId = null,
+					Profesional = usuarioProfesional2,
+					ProfesionalId = usuarioProfesional2.Id,
+
+				};
+				context.Turno.AddRange(turno);
+
+				var turno7 = new Turno
+				{
+					Id = Guid.NewGuid(),
+					Activo = false,
+					Confirmado = false,
+					Fecha = DateTime.Now,
+					FechaAlta = DateTime.Now,
+					Paciente = null,
+					PacienteId = null,
+					Profesional = usuarioProfesional2,
+					ProfesionalId = usuarioProfesional2.Id,
+
+				};
+
+				var turno8 = new Turno
+				{
+					Id = Guid.NewGuid(),
+					Activo = false,
+					Confirmado = true,
+					Fecha = DateTime.Now,
+					FechaAlta = DateTime.Now,
+					Paciente = null,
+					PacienteId = null,
+					Profesional = usuarioProfesional3,
+					ProfesionalId = usuarioProfesional3.Id,
+
+				};
+				context.Turno.AddRange(turno);
+
+				var turno9 = new Turno
+				{
+					Id = Guid.NewGuid(),
+					Activo = false,
+					Confirmado = true,
+					Fecha = DateTime.Now,
+					FechaAlta = DateTime.Now,
+					Paciente = null,
+					PacienteId = null,
+					Profesional = usuarioProfesional3,
+					ProfesionalId = usuarioProfesional3.Id,
+
+				};
+				context.Turno.AddRange(turno);
+
+				var turno10 = new Turno
+				{
+					Id = Guid.NewGuid(),
+					Activo = false,
+					Confirmado = false,
+					Fecha = DateTime.Now,
+					FechaAlta = DateTime.Now,
+					Paciente = null,
+					PacienteId = null,
+					Profesional = usuarioProfesional3,
+					ProfesionalId = usuarioProfesional3.Id,
+
+				};
+				context.Turno.AddRange(turno);
+				context.Turno.AddRange(turno2);
+				context.Turno.AddRange(turno3);
+				context.Turno.AddRange(turno4);
+				context.Turno.AddRange(turno5);
+				context.Turno.AddRange(turno6);
+				context.Turno.AddRange(turno7);
+				context.Turno.AddRange(turno8);
+				context.Turno.AddRange(turno9);
+				context.Turno.AddRange(turno10);
 
 				context.SaveChanges();
 			}
@@ -156,12 +298,12 @@ namespace AgendaDeTurnos.Data
 				var usuarioAdministrador = new Administrador
 				{
 					Id = Guid.NewGuid(),
-					Nombre = "Administrador",
-					Apellido = "Administrador",
+					Nombre = "eladmin",
+					Apellido = "adminazo",
 					Dni = "20123456",
-					Password = seguridad.EncriptarPass("Administrador"),
+					Password = seguridad.EncriptarPass("administrador"),
 					Direccion = "caba",
-					Email = "Administrador@gmail.com",
+					Email = "administrador@gmail.com",
 					FechaAlta = DateTime.Now,
 					Telefono = "1231231231"
 				};
