@@ -34,9 +34,7 @@ namespace AgendaDeTurnos.Models
         public DateTime FechaAlta { get; set; }
 
         [Display(Name = "Contraseña")]
-       // [StringLength(20, MinimumLength = 5,ErrorMessage = "La {0} debe tener {2} de mínimo")]
-        [Required(ErrorMessage = "La Contraseña es requerido")]
-        public string Password { get; set; }
+        public byte[] Password { get; set; }
 
         [Display(Name = "Rol")]
         public abstract Rol Rol { get;}

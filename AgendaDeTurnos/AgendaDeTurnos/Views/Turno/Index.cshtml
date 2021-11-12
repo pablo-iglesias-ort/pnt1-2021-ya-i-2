@@ -22,9 +22,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Fecha)
             </th>
+            @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Administrador.ToString())
+            {
             <th>
                 @Html.DisplayNameFor(model => model.Confirmado)
             </th>
+            }
             <th>
                 @Html.DisplayNameFor(model => model.Activo)
             </th>
@@ -43,9 +46,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Fecha)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Confirmado)
-            </td>
+            @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Administrador.ToString())
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Confirmado)
+                </td>
+            }
             <td>
                 @Html.DisplayFor(modelItem => item.Activo)
             </td>
@@ -56,16 +62,19 @@
                 @Html.DisplayFor(modelItem => item.Profesional.Apellido)
             </td>
             <td>
-                @if (!item.Confirmado)
+                @if (User.FindFirst(ClaimTypes.Role).Value != Rol.Paciente.ToString() && !item.Confirmado && string.IsNullOrEmpty(item.DescripcionCancelacion))
                 {
-                <a asp-action="Confirmar" asp-route-id="@item.Id">Confirmar |</a>
+                    <a asp-action="Confirmar" asp-route-id="@item.Id"> Confirmar |</a>
                 }
-                <a asp-action="Cancelar" asp-route-id="@item.Id">Cancelar</a> |
 
+                @if ((User.FindFirst(ClaimTypes.Role).Value != Rol.Paciente.ToString() && item.Confirmado) || (item.Activo && item.Confirmado))
+                {
+                    <a asp-action="Cancelar" asp-route-id="@item.Id"> Cancelar |</a>
+                }
 
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
 
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                
             </td>
         </tr>
 }

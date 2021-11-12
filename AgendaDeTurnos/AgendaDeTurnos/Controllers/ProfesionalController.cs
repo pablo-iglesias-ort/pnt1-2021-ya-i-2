@@ -15,6 +15,7 @@ namespace AgendaDeTurnos.Controllers
     public class ProfesionalController : Controller
     {
         private readonly AgendaDeTurnosContext _context;
+        private readonly ISeguridad seguridad = new SeguridadBasica();
 
         public ProfesionalController(AgendaDeTurnosContext context)
         {
@@ -61,14 +62,30 @@ namespace AgendaDeTurnos.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = nameof(Rol.Administrador))]
-        public async Task<IActionResult> Create([Bind("Matricula,HoraInicio,HoraFin,PrestacionId,Id,Nombre,Apellido,Dni,Email,Telefono,Direccion,FechaAlta,Password")] Profesional profesional)
+        public async Task<IActionResult> Create(Profesional profesional, string pass)
         {
             if (ModelState.IsValid)
             {
-                profesional.Id = Guid.NewGuid();
-                _context.Add(profesional);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (_context.Profesional.Any(p => p.Email == profesional.Email))
+                {
+                    ModelState.AddModelError(nameof(Paciente.Email), "El mail ya esta utilizado");
+                }
+                else
+                {
+                    if (seguridad.ValidarPass(pass))
+                    {
+                        profesional.Id = Guid.NewGuid();
+                        profesional.FechaAlta = DateTime.Now;
+                        profesional.Password = seguridad.EncriptarPass(pass);
+                        _context.Add(profesional);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(nameof(Paciente.Password), "No cumple con los requisitos");
+                    }
+                }
             }
             ViewData["PrestacionId"] = new SelectList(_context.Set<Prestacion>(), "PrestacionId", "Descripcion", profesional.PrestacionId);
             return View(profesional);

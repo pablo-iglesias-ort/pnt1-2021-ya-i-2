@@ -18,6 +18,7 @@ namespace AgendaDeTurnos.Controllers
     public class UsuariosController : Controller
     {
         private readonly AgendaDeTurnosContext _context;
+        private readonly ISeguridad seguridad = new SeguridadBasica();
 
         public UsuariosController(AgendaDeTurnosContext context)
         {
@@ -45,9 +46,8 @@ namespace AgendaDeTurnos.Controllers
                 var user = await _context.Usuario.FirstOrDefaultAsync(u => u.Email == email);
                 if (user != null)
                 {
-
-                    
-                    if (pass.SequenceEqual(user.Password))
+                    var passEncriptada = seguridad.EncriptarPass(pass);
+                    if (passEncriptada.SequenceEqual(user.Password))
                     {
 
                         // Creamos los Claims (credencial de acceso con informacion del usuario)
@@ -102,17 +102,30 @@ namespace AgendaDeTurnos.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registrarse(Paciente paciente)
-        {
-
-            //TODO: encriptar contraseña
+        public async Task<IActionResult> Registrarse(Paciente paciente, string pass)
+        {          
             //TODO: validar usuario existente
             if (ModelState.IsValid)
             {
-                paciente.Id = Guid.NewGuid();
-                    _context.Add(paciente);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Ingresar));
+                if(_context.Paciente.Any(p => p.Email == paciente.Email))
+                {
+                    ModelState.AddModelError(nameof(Paciente.Email),"El mail ya esta utilizado");
+                }
+                else
+                {
+                    if (seguridad.ValidarPass(pass))
+                    {
+                        paciente.Password = seguridad.EncriptarPass(pass);
+                        paciente.Id = Guid.NewGuid();
+                        _context.Add(paciente);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Ingresar));
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(nameof(Paciente.Password), "No cumple con los requisitos");
+                    }
+                }                
             }
             return View(paciente);
         }

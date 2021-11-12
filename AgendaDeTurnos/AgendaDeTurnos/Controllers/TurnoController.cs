@@ -60,6 +60,7 @@ namespace AgendaDeTurnos.Controllers
         }
 
         // GET: Turno/Create
+        [Authorize(Roles = nameof(Rol.Administrador))]
         public IActionResult Create()
         {
 
@@ -117,74 +118,34 @@ namespace AgendaDeTurnos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(Rol.Administrador))]
         public async Task<IActionResult> Create([Bind("Id,Fecha,Confirmado,Activo,FechaAlta,DescripcionCancelacion,PacienteId,ProfesionalId")] Turno turno)
         {
             //hacer la valicadcion del horacio 
-            turno.FechaAlta = DateTime.Now;
-            if (ModelState.IsValid && !TurnoExists(new Guid(), turno))
-            {
-                turno.Id = Guid.NewGuid();
-                _context.Add(turno);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["PacienteId"] = new SelectList(_context.Paciente, "Id", "Apellido", turno.PacienteId);
-            ViewData["ProfesionalId"] = new SelectList(_context.Profesional, "Id", "Apellido", turno.ProfesionalId);
-            return View(turno);
-        }
+            var profesional = new Profesional();
 
-        // GET: Turno/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var horaSolicitada = new DateTime(1, 1, 1, turno.Fecha.Hour, turno.Fecha.Minute, 0);
+            var horaInicio = new DateTime(1, 1, 1, profesional.HoraInicio.Hour, profesional.HoraInicio.Minute, 0);
+            var horaFin = new DateTime(1, 1, 1, profesional.HoraFin.Hour, profesional.HoraFin.Minute, 0);
 
-            var turno = await _context.Turno.FindAsync(id);
-            if (turno == null)
+            if (horaSolicitada >= horaInicio && horaSolicitada < horaFin)
             {
-                return NotFound();
-            }
-            ViewData["PacienteId"] = new SelectList(_context.Paciente, "Id", "Apellido", turno.PacienteId);
-            ViewData["ProfesionalId"] = new SelectList(_context.Paciente, "Id", "Apellido", turno.ProfesionalId);
-            return View(turno);
-        }
-
-        // POST: Turno/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Fecha,Confirmado,Activo,FechaAlta,DescripcionCancelacion,PacienteId,ProfesionalId")] Turno turno)
-        {
-            if (id != turno.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                turno.FechaAlta = DateTime.Now;
+                if (ModelState.IsValid && !TurnoExists(new Guid(), turno))
                 {
-                    _context.Update(turno);
+                    turno.Id = Guid.NewGuid();
+                    _context.Add(turno);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TurnoExists(turno.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ViewData["PacienteId"] = new SelectList(_context.Paciente, "Id", "Apellido", turno.PacienteId);
+                ViewData["ProfesionalId"] = new SelectList(_context.Profesional, "Id", "Apellido", turno.ProfesionalId);
             }
-            ViewData["PacienteId"] = new SelectList(_context.Paciente, "Id", "Apellido", turno.PacienteId);
-            ViewData["ProfesionalId"] = new SelectList(_context.Paciente, "Id", "Apellido", turno.ProfesionalId);
+            else
+            {
+                //TODO: indicar que no atiendete el profesional en esa hora
+            }
+
             return View(turno);
         }
 
@@ -195,6 +156,7 @@ namespace AgendaDeTurnos.Controllers
             return _context.Turno.Any(e => e.Id == id);
         }
 
+        [Authorize(Roles = "Administrador,Profesional")]
         public async Task<IActionResult> Confirmar(Guid id)
         {
 
@@ -211,6 +173,7 @@ namespace AgendaDeTurnos.Controllers
                 if (turno.Confirmado) return RedirectToAction(nameof(Index)); // DEVOLVER UN ERROR 
 
                 turno.Confirmado = true;
+                turno.DescripcionCancelacion = null;
 
                 _context.Update(turno);
                 await _context.SaveChangesAsync();

@@ -9,7 +9,7 @@ namespace AgendaDeTurnos.Data
 {
 	public static class InicializacionDeDatos
 	{
-
+		public static readonly ISeguridad seguridad = new SeguridadBasica();
 		public static void Inicializar(AgendaDeTurnosContext context)
 		{
 			context.Database.EnsureCreated();
@@ -26,7 +26,7 @@ namespace AgendaDeTurnos.Data
 					Dni = "50123456",
 					Email = "Paciente@gmail.com",
 					Direccion = "CABA",
-					Password = "Paciente",
+					Password = seguridad.EncriptarPass("Paciente"),
 					FechaAlta = DateTime.Now,
 					ObraSocial = "La Mejor",
 					Telefono = "1234567890",
@@ -77,7 +77,7 @@ namespace AgendaDeTurnos.Data
 					Nombre = "Profesional",
 					Apellido = "Profesional",
 					Dni = "40123456",
-					Password = "Profesional",
+					Password = seguridad.EncriptarPass("Profesional"),
 					FechaAlta = DateTime.Now,
 					Direccion = "caba",
 					Email = "Profesional@gmail.com",
@@ -96,7 +96,7 @@ namespace AgendaDeTurnos.Data
 					Nombre = "Profesional2",
 					Apellido = "Profesional2",
 					Dni = "40123456",
-					Password = "Profesional",
+					Password = seguridad.EncriptarPass("Profesional"),
 					FechaAlta = DateTime.Now,
 					Direccion = "caba",
 					Email = "Profesional2@gmail.com",
@@ -115,7 +115,7 @@ namespace AgendaDeTurnos.Data
 					Nombre = "Profesional3",
 					Apellido = "Profesional3",
 					Dni = "40123456",
-					Password = "Profesional",
+					Password = seguridad.EncriptarPass("Profesional"),
 					FechaAlta = DateTime.Now,
 					Direccion = "caba",
 					Email = "Profesional3@gmail.com",
@@ -159,7 +159,7 @@ namespace AgendaDeTurnos.Data
 					Nombre = "Administrador",
 					Apellido = "Administrador",
 					Dni = "20123456",
-					Password = "Administrador",
+					Password = seguridad.EncriptarPass("Administrador"),
 					Direccion = "caba",
 					Email = "Administrador@gmail.com",
 					FechaAlta = DateTime.Now,
