@@ -35,7 +35,16 @@
 </div>
 
 <div>
-    <a href="https://localhost:44380/">Back to List</a>
+    @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Administrador.ToString())
+    {
+        <a asp-action="Index">Back to List</a>
+    }
+    else
+    {
+        <a href="https://localhost:44380/">Back to List</a>
+    }
+
+    
 </div>
 
 @section Scripts {

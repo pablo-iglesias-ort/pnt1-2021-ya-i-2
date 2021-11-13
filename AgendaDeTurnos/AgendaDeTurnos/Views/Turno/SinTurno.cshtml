@@ -3,17 +3,11 @@
 }
 
 <p>
-    @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Administrador.ToString())
+    @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Paciente.ToString())
     {
-        <h1>
-            Turnos
-        </h1>
 
-        <a asp-action="Create">Create New</a>
+        <h2 class="text-danger">Usted ya tiene un turno activo</h2>
 
-        <h1>Mis Turnos</h1>
-
-        <a asp-action="SelecionPrestacion">Pedir un turno </a>
-        <h2 class="text-danger">Ya tiene un turno activo</h2>
+        <a href="https://localhost:44380/Turno">Volver</a>
     }
 </p>

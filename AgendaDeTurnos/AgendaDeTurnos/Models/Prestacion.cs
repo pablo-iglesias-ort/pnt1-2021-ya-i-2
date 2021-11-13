@@ -19,9 +19,11 @@ namespace AgendaDeTurnos.Models
         public string Descripcion { get; set; }
 
         [DataType(DataType.Time)]
+        [Display(Name = "Duracion (en horas)")]
         public DateTime Duracion { get; set; }
 
         [Required(ErrorMessage = "el precio es requerido")]
+        [Display(Name = "Precio ($)")]
         public double Precio { get; set; }
 
         // Relaciones

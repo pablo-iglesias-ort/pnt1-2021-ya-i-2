@@ -64,12 +64,49 @@ namespace AgendaDeTurnos.Controllers
         public IActionResult Create()
         {
 
-            ViewData["ListaProfesional"] = new SelectList(_context.Profesional, "Id", "Apellido");
+            ViewData["ListaProfesional"] = new SelectList(_context.Profesional, "Id", "NombreYApellido");
             return View();
         }
         public IActionResult SinTurno()
         {
             return View();
+        }
+
+        // POST: Turno/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = nameof(Rol.Administrador))]
+        public async Task<IActionResult> Create([Bind("Id,Fecha,Confirmado,Activo,FechaAlta,DescripcionCancelacion,PacienteId,ProfesionalId")] Turno turno)
+        {
+            //hacer la validacion del horario
+            var profesional = _context.Profesional.FirstOrDefault(p => p.Id == turno.ProfesionalId);
+
+            var horaSolicitada = new DateTime(1, 1, 1, turno.Fecha.Hour, turno.Fecha.Minute, 0);
+            var horaInicio = new DateTime(1, 1, 1, profesional.HoraInicio.Hour, profesional.HoraInicio.Minute, 0);
+            var horaFin = new DateTime(1, 1, 1, profesional.HoraFin.Hour, profesional.HoraFin.Minute, 0);
+
+            if (horaSolicitada >= horaInicio && horaSolicitada < horaFin)
+            {
+                turno.FechaAlta = DateTime.Now;
+                if (ModelState.IsValid && !TurnoExists(new Guid(), turno))
+                {
+                    turno.Id = Guid.NewGuid();
+                    _context.Add(turno);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                ViewData["PacienteId"] = new SelectList(_context.Paciente, "Id", "Apellido", turno.PacienteId);
+                ViewData["ProfesionalId"] = new SelectList(_context.Profesional, "Id", "Apellido", turno.ProfesionalId);
+            }
+            else
+            {
+                ModelState.AddModelError("Fecha", "La hora debe ser entre " + profesional.HoraInicio.ToString("HH:mm") + " y " + 
+                    profesional.HoraFin.ToString("HH:mm") + ".");
+            }
+
+            return View(turno);
         }
 
         public IActionResult SelecionPrestacion()
@@ -78,9 +115,9 @@ namespace AgendaDeTurnos.Controllers
 
             var TurnoPaciente = _context.Turno.FirstOrDefault(t => t.PacienteId == userId && t.Activo == true);
 
-            if (TurnoPaciente == null) {
-                //ModelState.AddModelError("","Ya tiene un tuno actibo para " + TurnoPaciente.Profesional.Prestacion +" a las "+ TurnoPaciente.Fecha);
-                RedirectToAction(nameof(SinTurno));
+            if (TurnoPaciente != null) {
+                //ModelState.AddModelError("","Ya tiene un tuno activo para " + TurnoPaciente.Profesional.Prestacion +" a las "+ TurnoPaciente.Fecha);
+                return RedirectToAction(nameof(SinTurno));
                 
             } 
 
@@ -122,41 +159,7 @@ namespace AgendaDeTurnos.Controllers
             return View(turnos);
         }
 
-        // POST: Turno/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = nameof(Rol.Administrador))]
-        public async Task<IActionResult> Create([Bind("Id,Fecha,Confirmado,Activo,FechaAlta,DescripcionCancelacion,PacienteId,ProfesionalId")] Turno turno)
-        {
-            //hacer la valicadcion del horacio 
-            var profesional = new Profesional();
-
-            var horaSolicitada = new DateTime(1, 1, 1, turno.Fecha.Hour, turno.Fecha.Minute, 0);
-            var horaInicio = new DateTime(1, 1, 1, profesional.HoraInicio.Hour, profesional.HoraInicio.Minute, 0);
-            var horaFin = new DateTime(1, 1, 1, profesional.HoraFin.Hour, profesional.HoraFin.Minute, 0);
-
-            if (horaSolicitada >= horaInicio && horaSolicitada < horaFin)
-            {
-                turno.FechaAlta = DateTime.Now;
-                if (ModelState.IsValid && !TurnoExists(new Guid(), turno))
-                {
-                    turno.Id = Guid.NewGuid();
-                    _context.Add(turno);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                ViewData["PacienteId"] = new SelectList(_context.Paciente, "Id", "Apellido", turno.PacienteId);
-                ViewData["ProfesionalId"] = new SelectList(_context.Profesional, "Id", "Apellido", turno.ProfesionalId);
-            }
-            else
-            {
-                //TODO: indicar que no atiendete el profesional en esa hora
-            }
-
-            return View(turno);
-        }
+       
 
 
         private bool TurnoExists(Guid id, Turno turno = null)

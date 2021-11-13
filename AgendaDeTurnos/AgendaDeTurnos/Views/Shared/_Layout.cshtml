@@ -48,7 +48,16 @@
                             <li class="nav-item float-right">
                                 <div>
                                     <img style="display:initial" src="~/person-circle.svg" alt="Perfil" />
-                                    <a style="display:initial" class="nav-link text-success font-italic" asp-area="" asp-controller="Paciente" asp-action="Edit" asp-route-id="@User.FindFirstValue("UserId")">@User.FindFirstValue(ClaimTypes.GivenName)</a>
+                                    @if (@User.FindFirstValue(ClaimTypes.Role) == Rol.Paciente.ToString())
+                                    {
+                                        <a style="display:initial" class="nav-link text-success font-italic" asp-area="" asp-controller="Paciente" asp-action="Edit" asp-route-id="@User.FindFirstValue("UserId")">@User.FindFirstValue(ClaimTypes.GivenName)</a>
+
+                                    }
+                                    else
+                                    {
+                                        <a style="display:initial" class="nav-link text-success font-italic" asp-area="">@User.FindFirstValue(ClaimTypes.GivenName)</a>
+                                    }
+                                    
                                 </div>
                             </li>
                             <li class="nav-item float-right">

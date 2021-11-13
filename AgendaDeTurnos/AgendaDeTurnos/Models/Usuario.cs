@@ -11,6 +11,8 @@ namespace AgendaDeTurnos.Models
         [Key]
         public Guid Id { get; set; }
 
+        public string NombreYApellido { get { return string.Format("{0} {1}",this.Nombre,this.Apellido);} }
+
         [Required(ErrorMessage = "El Nombre es requerido")]
         public string Nombre { get; set; }
 

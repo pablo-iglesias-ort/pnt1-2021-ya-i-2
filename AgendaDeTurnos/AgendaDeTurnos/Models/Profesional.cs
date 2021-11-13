@@ -9,14 +9,14 @@ namespace AgendaDeTurnos.Models
 {
     public class Profesional : Usuario
     {
-        [Required(ErrorMessage = "la matricula es requerida")]
+        [Required(ErrorMessage = "La matricula es requerida")]
         public string Matricula { get; set; }
 
-        [Required(ErrorMessage = "la hora de inicio es requerida")]
+        [Required(ErrorMessage = "La hora de inicio es requerida")]
         [DataType(DataType.Time)]
         public DateTime HoraInicio { get; set; }
 
-        [Required(ErrorMessage = "la hora de fin es requerida")]
+        [Required(ErrorMessage = "La hora de fin es requerida")]
         [DataType(DataType.Time)]
         public DateTime HoraFin { get; set; }
 

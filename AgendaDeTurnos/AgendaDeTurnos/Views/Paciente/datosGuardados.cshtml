@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Paciente";
+}
+
+<p>
+    @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Paciente.ToString())
+    {
+
+        <h2 class="text-danger">Sus datos se guardaron con exito.</h2>
+
+        <a href="https://localhost:44380">Volver</a>
+    }
+</p>

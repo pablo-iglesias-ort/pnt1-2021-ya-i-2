@@ -22,12 +22,14 @@ namespace AgendaDeTurnos.Controllers
         }
 
         // GET: Pacientes
+        [Authorize(Roles = nameof(Rol.Administrador))]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Paciente.ToListAsync());
         }
 
         // GET: Pacientes/Details/5
+        [Authorize(Roles = "Administrador,Profesional")]
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -55,6 +57,7 @@ namespace AgendaDeTurnos.Controllers
             if (ModelState.IsValid)
             {
                 paciente.Id = Guid.NewGuid();
+                paciente.FechaAlta = DateTime.Now;
                 _context.Add(paciente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -83,64 +86,46 @@ namespace AgendaDeTurnos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ObraSocial,Id,Nombre,Apellido,Dni,Email,Telefono,Direccion,FechaAlta,Password")] Paciente paciente)
+        public async Task<IActionResult> Edit(Guid id, [Bind("ObraSocial,Id,Telefono,Direccion")] Paciente paciente)
         {
             if (id != paciente.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            
+            try
             {
-                try
+                var pacienteUpdate = await _context.Paciente.FindAsync(id);
+
+                pacienteUpdate.ObraSocial = paciente.ObraSocial;
+                pacienteUpdate.Telefono = paciente.Telefono;
+                pacienteUpdate.Direccion = paciente.Direccion;
+                _context.Update(pacienteUpdate);
+                await _context.SaveChangesAsync();
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PacienteExists(paciente.Id))
                 {
-                    _context.Update(paciente);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!PacienteExists(paciente.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(paciente);
+
+            return RedirectToAction(nameof(datosGuardados));
         }
 
-        // GET: Pacientes/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> datosGuardados(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var paciente = await _context.Paciente
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (paciente == null)
-            {
-                return NotFound();
-            }
-
-            return View(paciente);
+            
+            return View();
         }
 
-        // POST: Pacientes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var paciente = await _context.Paciente.FindAsync(id);
-            _context.Paciente.Remove(paciente);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
         private bool PacienteExists(Guid id)
         {
