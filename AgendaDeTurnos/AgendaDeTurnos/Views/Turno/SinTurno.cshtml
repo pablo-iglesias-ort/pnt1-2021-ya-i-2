@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Turnos";
+}
+
+<p>
+    @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Administrador.ToString())
+    {
+        <h1>
+            Turnos
+        </h1>
+
+        <a asp-action="Create">Create New</a>
+
+        <h1>Mis Turnos</h1>
+
+        <a asp-action="SelecionPrestacion">Pedir un turno </a>
+        <h2 class="text-danger">Ya tiene un turno activo</h2>
+    }
+</p>

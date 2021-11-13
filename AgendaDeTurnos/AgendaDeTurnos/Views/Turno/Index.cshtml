@@ -7,19 +7,18 @@
 <p>
     @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Administrador.ToString())
     {
-        <h1>Turnos</h1>
+        <h1>
+            Turnos
+        </h1>
 
         <a asp-action="Create">Create New</a>
-    }
-    else
-    {
-        <h1>Mis Turnos</h1>
-
         
+        <h1>Mis Turnos</h1>
 
         <a asp-action="SelecionPrestacion">Pedir un turno </a>
     }
 </p>
+
 <table class="table">
     <thead>
         <tr>

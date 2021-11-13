@@ -67,14 +67,23 @@ namespace AgendaDeTurnos.Controllers
             ViewData["ListaProfesional"] = new SelectList(_context.Profesional, "Id", "Apellido");
             return View();
         }
+        public IActionResult SinTurno()
+        {
+            return View();
+        }
 
         public IActionResult SelecionPrestacion()
         {
-
-            //1 verificar si el paciente actual tiene un turno activo 
-            //2 Agragar el turno al paciente en estado 
-
             var userId = Guid.Parse(User.FindFirst("UserId").Value);
+
+            var TurnoPaciente = _context.Turno.FirstOrDefault(t => t.PacienteId == userId && t.Activo == true);
+
+            if (TurnoPaciente == null) {
+                //ModelState.AddModelError("","Ya tiene un tuno actibo para " + TurnoPaciente.Profesional.Prestacion +" a las "+ TurnoPaciente.Fecha);
+                RedirectToAction(nameof(SinTurno));
+                
+            } 
+
             ViewData["ListPrestaciones"] = new SelectList(_context.Prestacion, "PrestacionId", "Descripcion");
             return View();
         }
