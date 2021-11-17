@@ -110,7 +110,7 @@
 
                 @if (User.FindFirst(ClaimTypes.Role).Value != Rol.Paciente.ToString()) 
                 { 
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a>
                 }
 
                 
