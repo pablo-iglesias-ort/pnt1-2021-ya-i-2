@@ -115,35 +115,32 @@ namespace AgendaDeTurnos.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = nameof(Rol.Administrador))]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Matricula,HoraInicio,HoraFin,PrestacionId,Id,Nombre,Apellido,Dni,Email,Telefono,Direccion,FechaAlta,Password")] Profesional profesional)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Matricula,HoraInicio,HoraFin,PrestacionId,Id,Nombre,Apellido,Dni,Email,Telefono,Direccion")] Profesional profesional)
         {
             if (id != profesional.Id)
             {
                 return NotFound();
             }
+                
+                    var profesionalUpdate = await _context.Profesional.FindAsync(id);
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(profesional);
+                    profesionalUpdate.Matricula = profesional.Matricula;
+                    profesionalUpdate.HoraInicio = profesional.HoraInicio;
+                    profesionalUpdate.HoraFin = profesional.HoraFin;
+                    profesionalUpdate.PrestacionId = profesional.PrestacionId;
+                    profesionalUpdate.Nombre = profesional.Nombre;
+                    profesionalUpdate.Apellido = profesional.Apellido;
+                    profesionalUpdate.Dni = profesional.Dni;
+                    profesionalUpdate.Email = profesional.Email;
+                    profesionalUpdate.Telefono = profesional.Telefono;
+                    profesionalUpdate.Direccion = profesional.Direccion;
+
+                    _context.Update(profesionalUpdate);
                     await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProfesionalExists(profesional.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
+
+                
             ViewData["PrestacionId"] = new SelectList(_context.Set<Prestacion>(), "PrestacionId", "Descripcion", profesional.PrestacionId);
-            return View(profesional);
+            return RedirectToAction(nameof(Index));
         }
 
         [Authorize(Roles = nameof(Rol.Administrador))]

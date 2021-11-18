@@ -110,14 +110,14 @@
 
                 @if (User.FindFirst(ClaimTypes.Role).Value != Rol.Paciente.ToString()) 
                 { 
-            <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
                 }
 
                 
 
                 @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Profesional.ToString() && !item.Atendido && item.Confirmado && item.Activo)
                 {
-            <a asp-action="Atendido" asp-route-id="@item.Id">| Atendido</a>
+                    <a asp-action="Atendido" asp-route-id="@item.Id">| Atendido</a>
                 }
 
             </td>
