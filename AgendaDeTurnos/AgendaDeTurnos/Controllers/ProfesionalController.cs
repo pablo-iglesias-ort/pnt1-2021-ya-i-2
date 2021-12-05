@@ -177,8 +177,8 @@ namespace AgendaDeTurnos.Controllers
         }
         public async Task<IActionResult> ProfesionalesAsync()
         {
-
-            return View(await _context.Profesional.ToListAsync());
+            var agendaDeTurnosContext = _context.Profesional.Include(p => p.Prestacion);
+            return View(await agendaDeTurnosContext.ToListAsync());
         }
 
         private bool ProfesionalExists(Guid id)
