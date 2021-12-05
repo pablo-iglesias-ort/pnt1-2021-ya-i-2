@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AgendaDeTurnos.Controllers
 {
-    [Authorize]
     public class PrestacionController : Controller
     {
         private readonly AgendaDeTurnosContext _context;
@@ -22,12 +21,14 @@ namespace AgendaDeTurnos.Controllers
         }
 
         // GET: Prestacion
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Prestacion.ToListAsync());
         }
 
         // GET: Prestacion/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -152,6 +153,12 @@ namespace AgendaDeTurnos.Controllers
             _context.Prestacion.Remove(prestacion);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> PrestacionesAsync()
+        {
+
+            return View(await _context.Prestacion.ToListAsync());
         }
 
         private bool PrestacionExists(Guid id)

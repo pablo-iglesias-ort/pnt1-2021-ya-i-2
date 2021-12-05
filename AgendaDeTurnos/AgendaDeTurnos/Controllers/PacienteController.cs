@@ -28,24 +28,6 @@ namespace AgendaDeTurnos.Controllers
             return View(await _context.Paciente.ToListAsync());
         }
 
-        // GET: Pacientes/Details/5
-        [Authorize(Roles = "Administrador,Profesional")]
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var paciente = await _context.Paciente
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (paciente == null)
-            {
-                return NotFound();
-            }
-
-            return View(paciente);
-        }
 
         // POST: Pacientes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 

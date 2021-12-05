@@ -1,0 +1,44 @@
+﻿@model IEnumerable<AgendaDeTurnos.Models.Profesional>
+
+    @{
+    ViewData["Title"] = "Index";
+    }
+
+    <h1>Profesionales</h1>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Prestacion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Apellido)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Prestacion.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Apellido)
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <div>
+        <a href="https://localhost:44380/Home/Privacy">Volver</a>
+    </div>

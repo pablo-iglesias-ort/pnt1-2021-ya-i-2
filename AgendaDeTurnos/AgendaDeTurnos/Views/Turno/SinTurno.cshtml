@@ -6,7 +6,7 @@
     @if (User.FindFirst(ClaimTypes.Role).Value == Rol.Paciente.ToString())
     {
 
-        <h2 class="text-danger">Usted ya tiene un turno activo</h2>
+        <h2 class="text-danger">Usted ya tiene un turno activo.</h2>
 
         <a href="https://localhost:44380/Turno">Volver</a>
     }

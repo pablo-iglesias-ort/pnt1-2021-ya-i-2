@@ -1,0 +1,47 @@
+﻿@model IEnumerable<AgendaDeTurnos.Models.Prestacion>
+
+
+<h1>Prestaciones</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duracion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duracion)
+                </td>
+                <td>
+                    $@Html.DisplayFor(modelItem => item.Precio)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div>
+    <a href="https://localhost:44380/Home/Privacy">Volver</a>
+</div>

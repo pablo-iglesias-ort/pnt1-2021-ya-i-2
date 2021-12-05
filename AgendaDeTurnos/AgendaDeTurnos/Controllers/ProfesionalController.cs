@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AgendaDeTurnos.Controllers
 {
-    [Authorize(Roles = nameof(Rol.Administrador))]
     public class ProfesionalController : Controller
     {
         private readonly AgendaDeTurnosContext _context;
@@ -22,6 +21,7 @@ namespace AgendaDeTurnos.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = nameof(Rol.Administrador))]
         // GET: Profesionales
         public async Task<IActionResult> Index()
         {
@@ -30,6 +30,7 @@ namespace AgendaDeTurnos.Controllers
         }
 
         // GET: Profesionales/Details/5
+        [Authorize(Roles = nameof(Rol.Administrador))]
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -173,6 +174,11 @@ namespace AgendaDeTurnos.Controllers
             _context.Profesional.Remove(profesional);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> ProfesionalesAsync()
+        {
+
+            return View(await _context.Profesional.ToListAsync());
         }
 
         private bool ProfesionalExists(Guid id)
