@@ -117,6 +117,7 @@ namespace AgendaDeTurnos.Controllers
                     {
                         paciente.Password = seguridad.EncriptarPass(pass);
                         paciente.Id = Guid.NewGuid();
+                        paciente.FechaAlta = DateTime.Now;
                         _context.Add(paciente);
                         await _context.SaveChangesAsync();
                         return RedirectToAction(nameof(Ingresar));

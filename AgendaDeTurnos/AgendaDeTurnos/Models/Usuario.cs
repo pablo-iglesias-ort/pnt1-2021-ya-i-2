@@ -32,7 +32,6 @@ namespace AgendaDeTurnos.Models
         public string Direccion { get; set; }
 
         [Display(Name = "Fecha de Alta")]
-        [DataType(DataType.Date)]
         public DateTime FechaAlta { get; set; }
 
         [Display(Name = "Contraseña")]
